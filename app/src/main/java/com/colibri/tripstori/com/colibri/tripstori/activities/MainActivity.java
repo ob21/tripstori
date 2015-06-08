@@ -15,7 +15,7 @@ public class MainActivity extends TSActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logi("onCreate");
+        logi(getClass(), "onCreate");
     }
 
 

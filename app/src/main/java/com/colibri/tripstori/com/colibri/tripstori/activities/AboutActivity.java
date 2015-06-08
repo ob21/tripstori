@@ -16,7 +16,7 @@ public class AboutActivity extends TSActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        logi("onCreate");
+        logi(getClass(), "onCreate about");
     }
 
 

@@ -16,22 +16,22 @@ public class TSLog {
 
 
     public void verb(String c, String m) {
-        if(!mDebug)
+        if(mDebug)
             Log.v(c, m);
     }
 
     public void debug(String c, String m) {
-        if(!mDebug)
+        if(mDebug)
             Log.d(c, m);
     }
 
     public void info(String c, String m) {
-        if(!mDebug)
+        if(mDebug)
             Log.i(c, m);
     }
 
     public void warn(String c, String m) {
-        if(!mDebug)
+        if(mDebug)
             Log.w(c, m);
     }
 

@@ -1,6 +1,7 @@
 package com.colibri.tripstori.com.colibri.tripstori.activities;
 
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.colibri.tripstori.TSApp;
 
@@ -9,24 +10,24 @@ import com.colibri.tripstori.TSApp;
  */
 public class TSActivity  extends ActionBarActivity {
 
-    protected void logv(String message) {
-        ((TSApp)getApplication()).getLog().verb(getLocalClassName(), message);
+    protected void logv(Class c, String m) {
+        ((TSApp)getApplication()).getLog().verb(c.getName().substring(c.getName().lastIndexOf(".")), m);
     }
 
-    protected void logd(String message) {
-        ((TSApp)getApplication()).getLog().debug(getLocalClassName(), message);
+    protected void logd(Class c, String m) {
+        ((TSApp)getApplication()).getLog().debug(c.getName().substring(c.getName().lastIndexOf(".")), m);
     }
 
-    protected void logi(String message) {
-        ((TSApp)getApplication()).getLog().info(getLocalClassName(), message);
+    protected void logi(Class c, String m) {
+        ((TSApp)getApplication()).getLog().info(c.getName().substring(c.getName().lastIndexOf(".")), m);
     }
 
-    protected void logw(String message) {
-        ((TSApp)getApplication()).getLog().warn(getLocalClassName(), message);
+    protected void logw(Class c, String m) {
+        ((TSApp)getApplication()).getLog().warn(c.getName().substring(c.getName().lastIndexOf(".")), m);
     }
 
-    protected void loge(String message) {
-        ((TSApp)getApplication()).getLog().error(getLocalClassName(), message);
+    protected void loge(Class c, String m) {
+        ((TSApp)getApplication()).getLog().error(c.getName().substring(c.getName().lastIndexOf(".")) ,m);
     }
 
 }
