@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">tripstori</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_main">Hello main !</string>
+    <string name="hello_about">Hello about !</string>
     <string name="action_settings">Settings</string>
+    <string name="action_about">About</string>
 </resources>

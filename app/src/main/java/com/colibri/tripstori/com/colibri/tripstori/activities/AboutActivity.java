@@ -1,19 +1,22 @@
-package com.colibri.tripstori;
+package com.colibri.tripstori.com.colibri.tripstori.activities;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.colibri.tripstori.R;
 
-public class MainActivity extends ActionBarActivity {
+/**
+ * Created by olivierbriand on 08/06/2015.
+ */
+public class AboutActivity extends TSActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_about);
 
-        ((TSApp)getApplication()).getLog().info(this.getClass(), "onCreate");
+        logi("onCreate");
     }
 
 
@@ -38,4 +41,5 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

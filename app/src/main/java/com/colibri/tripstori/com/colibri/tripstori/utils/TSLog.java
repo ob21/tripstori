@@ -15,23 +15,28 @@ public class TSLog {
     }
 
 
-    public void verb(Class c, String m) {
+    public void verb(String c, String m) {
         if(!mDebug)
-            Log.v(c.getName(), m);
+            Log.v(c, m);
     }
 
-    public void info(Class c, String m) {
+    public void debug(String c, String m) {
         if(!mDebug)
-            Log.i(c.getName(), m);
+            Log.d(c, m);
     }
 
-    public void warn(Class c, String m) {
+    public void info(String c, String m) {
         if(!mDebug)
-            Log.w(c.getName(), m);
+            Log.i(c, m);
     }
 
-    public void error(Class c, String m) {
-        Log.e(c.getName(), m);
+    public void warn(String c, String m) {
+        if(!mDebug)
+            Log.w(c, m);
+    }
+
+    public void error(String c, String m) {
+        Log.e(c, m);
     }
 
 }
