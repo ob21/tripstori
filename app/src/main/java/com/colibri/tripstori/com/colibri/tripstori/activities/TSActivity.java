@@ -1,7 +1,6 @@
 package com.colibri.tripstori.com.colibri.tripstori.activities;
 
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 import com.colibri.tripstori.TSApp;
 
