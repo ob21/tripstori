@@ -33,6 +33,12 @@ public class MainActivity extends TSActivity {
         logi(getClass(), "onCreate");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mListAdapter.notifyDataSetChanged();
+    }
+
     private ArrayList<Interest> getInterests() {
         ArrayList<Interest> interests = new ArrayList<>();
         interests.add(new Interest("0", "title0"));

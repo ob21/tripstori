@@ -12,7 +12,6 @@
         android:id="@+id/interests_lv"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:background="@color/material_deep_teal_500"/>
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 
 </RelativeLayout>
