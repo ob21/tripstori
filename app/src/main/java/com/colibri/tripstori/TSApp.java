@@ -3,7 +3,7 @@ package com.colibri.tripstori;
 import android.app.Application;
 import android.util.Log;
 
-import com.colibri.tripstori.com.colibri.tripstori.utils.TSLog;
+import com.colibri.tripstori.utils.TSLog;
 
 /**
  * Created by olivierbriand on 05/06/2015.

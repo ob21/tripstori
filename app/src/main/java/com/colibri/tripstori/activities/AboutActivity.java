@@ -1,4 +1,4 @@
-package com.colibri.tripstori.com.colibri.tripstori.activities;
+package com.colibri.tripstori.activities;
 
 import android.os.Bundle;
 import android.view.Menu;

@@ -1,4 +1,4 @@
-package com.colibri.tripstori.com.colibri.tripstori.utils;
+package com.colibri.tripstori.utils;
 
 import android.app.Activity;
 import android.util.Log;

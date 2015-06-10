@@ -1,4 +1,4 @@
-package com.colibri.tripstori.com.colibri.tripstori.activities;
+package com.colibri.tripstori.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +7,9 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.colibri.tripstori.R;
-import com.colibri.tripstori.com.colibri.tripstori.adapters.InterestsListAdapter;
-import com.colibri.tripstori.com.colibri.tripstori.model.Interest;
+import com.colibri.tripstori.adapters.InterestsListAdapter;
+import com.colibri.tripstori.model.Interest;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 

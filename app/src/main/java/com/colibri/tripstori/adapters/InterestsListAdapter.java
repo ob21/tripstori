@@ -1,4 +1,4 @@
-package com.colibri.tripstori.com.colibri.tripstori.adapters;
+package com.colibri.tripstori.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.colibri.tripstori.R;
-import com.colibri.tripstori.com.colibri.tripstori.model.Interest;
+import com.colibri.tripstori.model.Interest;
 
 import java.util.ArrayList;
 
