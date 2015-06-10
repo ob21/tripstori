@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
  */
 public class Interest {
 
-    private String mId;
+    private long mId;
 
     private String mTitle;
 
@@ -15,16 +15,16 @@ public class Interest {
 
     private Bitmap mImage;
 
-    public Interest(String id, String title) {
+    public Interest(long id, String title) {
         setId(id);
         setTitle(title);
     }
 
-    public String getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.mId = id;
     }
 
@@ -34,5 +34,10 @@ public class Interest {
 
     public void setTitle(String title) {
         this.mTitle = title;
+    }
+
+    @Override
+    public String toString() {
+        return mTitle;
     }
 }
