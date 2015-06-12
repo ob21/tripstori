@@ -26,6 +26,10 @@ public class InterestsListAdapter extends BaseAdapter {
         mInterests = interests;
     }
 
+    public void setInterests(ArrayList<Interest> interests) {
+        mInterests = interests;
+    }
+
     @Override
     public int getCount() {
         return mInterests.size();
@@ -57,7 +61,7 @@ public class InterestsListAdapter extends BaseAdapter {
         }
 
         Interest interest = mInterests.get(position);
-        holder.id.setText(interest.getId());
+        holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle());
 
         return view;

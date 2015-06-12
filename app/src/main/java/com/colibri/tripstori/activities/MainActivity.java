@@ -8,9 +8,12 @@ import android.widget.ListView;
 
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
+import com.colibri.tripstori.database.InterestsDataSource;
 import com.colibri.tripstori.model.Interest;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends TSActivity {
@@ -18,15 +21,18 @@ public class MainActivity extends TSActivity {
     private ListView mInterestsList;
     private InterestsListAdapter mListAdapter;
 
+    private InterestsDataSource mDatasource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getInterests();
+        mDatasource = new InterestsDataSource(this);
+        mDatasource.open();
 
         mInterestsList = (ListView)findViewById(R.id.interests_lv);
-        mListAdapter = new InterestsListAdapter(this, getInterests());
+        mListAdapter = new InterestsListAdapter(this, mDatasource.getAllInterests());
         mInterestsList.setAdapter(mListAdapter);
 
         logi(getClass(), "onCreate");
@@ -38,13 +44,13 @@ public class MainActivity extends TSActivity {
         mListAdapter.notifyDataSetChanged();
     }
 
-    private ArrayList<Interest> getInterests() {
-        ArrayList<Interest> interests = new ArrayList<>();
-        interests.add(new Interest("0", "title0"));
-        interests.add(new Interest("1", "title1"));
-        interests.add(new Interest("2", "title2"));
-        return interests;
-    }
+//    private ArrayList<Interest> getInterests() {
+//        ArrayList<Interest> interests = new ArrayList<>();
+//        interests.add(new Interest(0, "title0"));
+//        interests.add(new Interest(1, "title1"));
+//        interests.add(new Interest(2, "title2"));
+//        return interests;
+//    }
 
 
     @Override
@@ -62,6 +68,18 @@ public class MainActivity extends TSActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_add) {
+            mDatasource.createInterest("title"+new int[1]);
+            mListAdapter.setInterests(mDatasource.getAllInterests());
+            mListAdapter.notifyDataSetChanged();
+            return true;
+        }
+        if (id == R.id.action_delete_all) {
+            mDatasource.deleteAllInterests();
+            mListAdapter.setInterests(mDatasource.getAllInterests());
+            mListAdapter.notifyDataSetChanged();
+            return true;
+        }
         if (id == R.id.action_settings) {
             return true;
         }

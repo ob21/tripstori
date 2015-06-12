@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Created by olivierbriand on 10/06/2015.
+ *
+ * Use : http://www.vogella.com/tutorials/AndroidSQLite/article.html
  */
 
 public class InterestsDataSource {
@@ -56,8 +58,13 @@ public class InterestsDataSource {
                 + " = " + id, null);
     }
 
-    public List<Interest> getAllInterests() {
-        List<Interest> interests = new ArrayList<Interest>();
+    public void deleteAllInterests() {
+        System.out.println("All interests deleted");
+        database.delete(TSDbHelper.TABLE_INTERESTS, null, null);
+    }
+
+    public ArrayList<Interest> getAllInterests() {
+        ArrayList<Interest> interests = new ArrayList<Interest>();
 
         Cursor cursor = database.query(TSDbHelper.TABLE_INTERESTS,
                 allColumns, null, null, null, null, null);
@@ -74,9 +81,7 @@ public class InterestsDataSource {
     }
 
     private Interest cursorToInterest(Cursor cursor) {
-        Interest interest = new Interest();
-        interest.setId(cursor.getLong(0));
-        interest.setTitle(cursor.getString(1));
+        Interest interest = new Interest(cursor.getLong(0), cursor.getString(1));
         return interest;
     }
 }
