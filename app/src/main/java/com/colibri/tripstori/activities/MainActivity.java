@@ -44,14 +44,6 @@ public class MainActivity extends TSActivity {
         mListAdapter.notifyDataSetChanged();
     }
 
-//    private ArrayList<Interest> getInterests() {
-//        ArrayList<Interest> interests = new ArrayList<>();
-//        interests.add(new Interest(0, "title0"));
-//        interests.add(new Interest(1, "title1"));
-//        interests.add(new Interest(2, "title2"));
-//        return interests;
-//    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,7 +61,7 @@ public class MainActivity extends TSActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
-            mDatasource.createInterest("title"+new int[1]);
+            mDatasource.createInterest("title "+new int[1]);
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
