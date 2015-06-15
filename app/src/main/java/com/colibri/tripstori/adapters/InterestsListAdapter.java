@@ -8,8 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.model.Interest;
+import com.colibri.tripstori.utils.VolleyManager;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,12 @@ import java.util.ArrayList;
  * Created by olivierbriand on 09/06/2015.
  */
 public class InterestsListAdapter extends BaseAdapter {
+
+    ImageLoader mImageLoader;
+    ImageView mImageView;
+
+    private static final String IMAGE_URL =
+            "http://developer.android.com/images/training/system-ui.png";
 
     private ArrayList<Interest> mInterests = new ArrayList<>();
     private LayoutInflater mInflater;
@@ -52,6 +61,7 @@ public class InterestsListAdapter extends BaseAdapter {
         if(convertView == null) {
             view = mInflater.inflate(R.layout.item_interest, parent, false);
             holder = new ViewHolder();
+            holder.image = (NetworkImageView)view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView)view.findViewById(R.id.item_interest_id);
             holder.title = (TextView)view.findViewById(R.id.item_interest_title);
             view.setTag(holder);
@@ -61,6 +71,8 @@ public class InterestsListAdapter extends BaseAdapter {
         }
 
         Interest interest = mInterests.get(position);
+        mImageLoader = VolleyManager.getInstance().getImageLoader();
+        holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
         holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle());
 
@@ -68,6 +80,7 @@ public class InterestsListAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
+        public NetworkImageView image;
         public TextView id;
         public TextView title;
     }

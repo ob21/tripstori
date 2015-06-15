@@ -10,6 +10,11 @@
         android:padding="@dimen/item_list_padding"
         android:background="@color/material_deep_teal_500">
 
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/item_interest_niv"
+            android:layout_width="150dp"
+            android:layout_height="170dp"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/item_interest_id"

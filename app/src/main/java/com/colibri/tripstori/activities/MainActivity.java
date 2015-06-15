@@ -1,21 +1,24 @@
 package com.colibri.tripstori.activities;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
 import com.colibri.tripstori.database.InterestsDataSource;
 import com.colibri.tripstori.model.Interest;
+import com.colibri.tripstori.utils.VolleyManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 public class MainActivity extends TSActivity {
 
@@ -28,6 +31,10 @@ public class MainActivity extends TSActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        int heapSize = am.getMemoryClass();
+        VolleyManager.init(this, (heapSize * 1024 * 1024 / 8));
 
         mDatasource = new InterestsDataSource(this);
         mDatasource.open();
