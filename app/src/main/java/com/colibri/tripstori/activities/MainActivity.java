@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.android.volley.RequestQueue;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
 import com.colibri.tripstori.database.InterestsDataSource;
