@@ -21,11 +21,10 @@ import java.util.ArrayList;
  */
 public class InterestsListAdapter extends BaseAdapter {
 
-    ImageLoader mImageLoader;
-    ImageView mImageView;
-
     private static final String IMAGE_URL =
             "http://developer.android.com/images/training/system-ui.png";
+    private static final String IMAGE1_URL =
+            "http://www.setgoogle.com/images/domain/homepage/google_icon/google_play.png";
 
     private ArrayList<Interest> mInterests = new ArrayList<>();
     private LayoutInflater mInflater;
@@ -71,8 +70,11 @@ public class InterestsListAdapter extends BaseAdapter {
         }
 
         Interest interest = mInterests.get(position);
-        mImageLoader = VolleyManager.getInstance().getImageLoader();
-        holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+        if(position % 2 == 0) {
+            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+        } else {
+            holder.image.setImageUrl(IMAGE1_URL, VolleyManager.getImageLoader());
+        }
         holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle());
 
