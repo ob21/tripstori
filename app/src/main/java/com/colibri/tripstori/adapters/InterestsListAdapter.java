@@ -76,7 +76,7 @@ public class InterestsListAdapter extends BaseAdapter {
             holder.image.setImageUrl(IMAGE1_URL, VolleyManager.getImageLoader());
         }
         holder.id.setText(String.valueOf(interest.getId()));
-        holder.title.setText(interest.getTitle());
+        holder.title.setText(interest.getTitle() + " - " + interest.getType());
 
         return view;
     }

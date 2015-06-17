@@ -7,7 +7,24 @@ import android.graphics.Bitmap;
  */
 public class Interest {
 
+    public enum Type {
+        GEO(0),
+        NOTE(1),
+        NONE(2);
+
+        private final int mValue;
+        private Type(int value) {
+            this.mValue = value;
+        }
+
+        public int getValue() {
+            return mValue;
+        }
+    }
+
     private long mId;
+
+    private Type mtype;
 
     private String mTitle;
 
@@ -15,9 +32,16 @@ public class Interest {
 
     private Bitmap mImage;
 
-    public Interest(long id, String title) {
+    private long mLongitude;
+
+    private long mLatitude;
+
+    private String mText;
+
+    public Interest(long id, String title, Type type) {
         setId(id);
         setTitle(title);
+        setType(type);
     }
 
     public long getId() {
@@ -34,6 +58,24 @@ public class Interest {
 
     public void setTitle(String title) {
         this.mTitle = title;
+    }
+
+    public Type getType() {
+        return mtype;
+    }
+
+    public void setType(Type type) {
+        this.mtype = type;
+    }
+
+    public static Type typeFromInt(int anInt) {
+        if(anInt==0) {
+            return Type.GEO;
+        } else
+        if(anInt==1) {
+            return Type.NOTE;
+        } else
+            return Type.NONE;
     }
 
     @Override

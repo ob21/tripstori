@@ -23,7 +23,7 @@ public class InterestsDataSource {
     private SQLiteDatabase database;
     private TSDbHelper dbHelper;
     private String[] allColumns = { TSDbHelper.COLUMN_ID,
-            TSDbHelper.COLUMN_TITLE };
+            TSDbHelper.COLUMN_TITLE, TSDbHelper.COLUMN_TYPE };
 
     public InterestsDataSource(Context context) {
         dbHelper = new TSDbHelper(context);
@@ -37,9 +37,10 @@ public class InterestsDataSource {
         dbHelper.close();
     }
 
-    public Interest createInterest(String interest) {
+    public Interest createInterest(String title, Interest.Type type) {
         ContentValues values = new ContentValues();
-        values.put(TSDbHelper.COLUMN_TITLE, interest);
+        values.put(TSDbHelper.COLUMN_TITLE, title);
+        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
         long insertId = database.insert(TSDbHelper.TABLE_INTERESTS, null,
                 values);
         Cursor cursor = database.query(TSDbHelper.TABLE_INTERESTS,
@@ -81,7 +82,7 @@ public class InterestsDataSource {
     }
 
     private Interest cursorToInterest(Cursor cursor) {
-        Interest interest = new Interest(cursor.getLong(0), cursor.getString(1));
+        Interest interest = new Interest(cursor.getLong(0), cursor.getString(1), Interest.typeFromInt(cursor.getInt(2)));
         return interest;
     }
 }

@@ -14,15 +14,18 @@ public class TSDbHelper extends SQLiteOpenHelper {
     public static final String TABLE_INTERESTS = "interests";
     public static final String COLUMN_ID = "id_interest";
     public static final String COLUMN_TITLE = "title_interest";
+    public static final String COLUMN_TYPE = "type_interest";
 
     private static final String DATABASE_NAME = "interests.db";
     private static final int DATABASE_VERSION = 1;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
-            + TABLE_INTERESTS + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_TITLE
-            + " text not null);";
+            + TABLE_INTERESTS + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_TITLE + " text not null,"
+            + COLUMN_TYPE + " integer"
+            + ");";
 
     public TSDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
