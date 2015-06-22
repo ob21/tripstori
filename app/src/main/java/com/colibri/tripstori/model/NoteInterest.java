@@ -8,7 +8,7 @@ public class NoteInterest extends Interest {
     private String mText;
 
     public NoteInterest(long id, String title, Type type, String text) {
-        super(id, title, type);
+        super(id, title, type, text);
         setText(text);
     }
 

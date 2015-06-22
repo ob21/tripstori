@@ -7,12 +7,12 @@ import android.graphics.Bitmap;
  */
 public class GeoInterest extends Interest {
 
-    private long mLongitude;
+    private double mLongitude;
 
-    private long mLatitude;
+    private double mLatitude;
 
-    public GeoInterest(long id, String title, Type type, long longitude, long latitude) {
-        super(id, title, type);
+    public GeoInterest(long id, String title, Type type, double longitude, double latitude) {
+        super(id, title, type, longitude, latitude);
         setLongitude(longitude);
         setLatitude(latitude);
     }
@@ -22,19 +22,19 @@ public class GeoInterest extends Interest {
         return this.getTitle();
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return mLongitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.mLongitude = longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return mLatitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.mLatitude = latitude;
     }
 }

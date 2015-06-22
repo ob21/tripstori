@@ -69,13 +69,13 @@ public class MainActivity extends TSActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_note) {
-            mDatasource.createInterest("title "+new int[1], Interest.Type.NOTE);
+            mDatasource.createNoteInterest("title "+new int[1], Interest.Type.NOTE, "text description "+new int[1]);
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_geo) {
-            mDatasource.createInterest("title "+new int[1], Interest.Type.GEO);
+            mDatasource.createGeoInterest("title "+new int[1], Interest.Type.GEO, 24.345, 47.456);
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
             return true;

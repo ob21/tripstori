@@ -15,6 +15,9 @@ public class TSDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "id_interest";
     public static final String COLUMN_TITLE = "title_interest";
     public static final String COLUMN_TYPE = "type_interest";
+    public static final String COLUMN_LONGITUDE = "longitude_interest";
+    public static final String COLUMN_LATITUDE = "latitude_interest";
+    public static final String COLUMN_TEXT = "text_interest";
 
     private static final String DATABASE_NAME = "interests.db";
     private static final int DATABASE_VERSION = 1;
@@ -24,7 +27,10 @@ public class TSDbHelper extends SQLiteOpenHelper {
             + TABLE_INTERESTS + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_TITLE + " text not null,"
-            + COLUMN_TYPE + " integer"
+            + COLUMN_TYPE + " integer,"
+            + COLUMN_LONGITUDE + " double,"
+            + COLUMN_LATITUDE + " double,"
+            + COLUMN_TEXT + " text"
             + ");";
 
     public TSDbHelper(Context context) {

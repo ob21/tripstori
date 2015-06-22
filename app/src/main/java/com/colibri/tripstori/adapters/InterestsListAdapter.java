@@ -77,6 +77,12 @@ public class InterestsListAdapter extends BaseAdapter {
         }
         holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
+        if(interest.getType()== Interest.Type.GEO) {
+            holder.title.append(" - "+interest.getLongitude()+", "+interest.getLatitude());
+        }
+        if(interest.getType()== Interest.Type.NOTE) {
+            holder.title.append(" - "+interest.getText());
+        }
 
         return view;
     }
