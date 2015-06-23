@@ -16,7 +16,9 @@ import com.colibri.tripstori.database.InterestsDataSource;
 import com.colibri.tripstori.model.Interest;
 import com.colibri.tripstori.utils.VolleyManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -67,15 +69,18 @@ public class MainActivity extends TSActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateandTime = sdf.format(new Date());
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_note) {
-            mDatasource.createNoteInterest("title "+new int[1], Interest.Type.NOTE, "text description "+new int[1]);
+            mDatasource.createNoteInterest("title note "+currentDateandTime, Interest.Type.NOTE, "text description "+currentDateandTime);
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_geo) {
-            mDatasource.createGeoInterest("title "+new int[1], Interest.Type.GEO, 24.345, 47.456);
+            mDatasource.createGeoInterest("title geo "+currentDateandTime, Interest.Type.GEO, 24.345, 47.456);
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
             return true;

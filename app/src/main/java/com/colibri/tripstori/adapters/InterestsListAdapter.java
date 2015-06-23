@@ -71,8 +71,10 @@ public class InterestsListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
+
         ViewNoteHolder noteHolder = null;
         ViewGeoHolder geoHolder = null;
+        ViewHolder holder = null;
 
         int type = getItemViewType(position);
 
@@ -80,42 +82,45 @@ public class InterestsListAdapter extends BaseAdapter {
 
             if (convertView == null) {
                 view = mInflater.inflate(R.layout.item_note_interest, parent, false);
-                noteHolder = new ViewNoteHolder();
-                noteHolder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
-                noteHolder.id = (TextView) view.findViewById(R.id.item_interest_id);
-                noteHolder.title = (TextView) view.findViewById(R.id.item_interest_title);
-                view.setTag(noteHolder);
+                holder = new ViewHolder();
+                holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+                holder.id = (TextView) view.findViewById(R.id.item_interest_id);
+                holder.title = (TextView) view.findViewById(R.id.item_interest_title);
+                holder.text = (TextView) view.findViewById(R.id.item_interest_text);
+                view.setTag(holder);
             } else {
                 view = convertView;
-                noteHolder = (ViewNoteHolder) view.getTag();
+                holder = (ViewHolder) view.getTag();
             }
 
             Interest interest = mInterests.get(position);
 
-            noteHolder.id.setText(String.valueOf(interest.getId()));
-            noteHolder.title.setText(interest.getTitle() + " - " + interest.getType());
-            noteHolder.text.append(interest.getText());
+            holder.id.setText(String.valueOf(interest.getId()));
+            holder.title.setText(interest.getTitle() + " - " + interest.getType());
+            holder.text.setText(interest.getText());
 
         } else {
 
             if (convertView == null) {
                 view = mInflater.inflate(R.layout.item_geo_interest, parent, false);
-                geoHolder = new ViewGeoHolder();
-                geoHolder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
-                geoHolder.id = (TextView) view.findViewById(R.id.item_interest_id);
-                geoHolder.title = (TextView) view.findViewById(R.id.item_interest_title);
-                view.setTag(geoHolder);
+                holder = new ViewHolder();
+                holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+                holder.id = (TextView) view.findViewById(R.id.item_interest_id);
+                holder.title = (TextView) view.findViewById(R.id.item_interest_title);
+                holder.longitude = (TextView) view.findViewById(R.id.item_interest_longitude);
+                holder.latitude = (TextView) view.findViewById(R.id.item_interest_latitude);
+                view.setTag(holder);
             } else {
                 view = convertView;
-                geoHolder = (ViewGeoHolder) view.getTag();
+                holder = (ViewHolder) view.getTag();
             }
 
             Interest interest = mInterests.get(position);
 
-            geoHolder.id.setText(String.valueOf(interest.getId()));
-            geoHolder.title.setText(interest.getTitle() + " - " + interest.getType());
-            geoHolder.longitude.setText(String.valueOf(interest.getLongitude()));
-            geoHolder.latitude.setText(String.valueOf(interest.getLatitude()));
+            holder.id.setText(String.valueOf(interest.getId()));
+            holder.title.setText(interest.getTitle() + " - " + interest.getType());
+            holder.longitude.setText(String.valueOf(interest.getLongitude()));
+            holder.latitude.setText(String.valueOf(interest.getLatitude()));
 
         }
 
@@ -135,5 +140,14 @@ public class InterestsListAdapter extends BaseAdapter {
         public TextView title;
         public TextView longitude;
         public TextView latitude;
+    }
+
+    private class ViewHolder {
+        public NetworkImageView image;
+        public TextView id;
+        public TextView title;
+        public TextView longitude;
+        public TextView latitude;
+        public TextView text;
     }
 }
