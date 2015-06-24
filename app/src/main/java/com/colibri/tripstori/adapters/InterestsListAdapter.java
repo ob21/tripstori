@@ -1,6 +1,7 @@
 package com.colibri.tripstori.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class InterestsListAdapter extends BaseAdapter {
     private static final int VIEW_TYPE_NONE = 0;
     private static final int VIEW_TYPE_NOTE = 1;
     private static final int VIEW_TYPE_GEO = 2;
+    private static final String TAG = "InterestsListAdapter";
 
     private ArrayList<Interest> mInterests = new ArrayList<>();
     private LayoutInflater mInflater;
@@ -56,93 +58,74 @@ public class InterestsListAdapter extends BaseAdapter {
         return 0;
     }
 
-
     @Override
     public int getItemViewType(int position) {
         if (mInterests.get(position).getType() == Interest.Type.NOTE) {
             return VIEW_TYPE_NOTE;
-        } else if (mInterests.get(position).getType() == Interest.Type.GEO) {
-            return VIEW_TYPE_GEO;
         } else {
-            return VIEW_TYPE_NONE;
+            return VIEW_TYPE_GEO;
         }
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
+    public int getViewTypeCount() {
+        return 3;
+    }
 
-        ViewNoteHolder noteHolder = null;
-        ViewGeoHolder geoHolder = null;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        Log.i(TAG, "getView : position="+position);
+
         ViewHolder holder = null;
 
         int type = getItemViewType(position);
 
-        if(type == VIEW_TYPE_NOTE) {
+        Log.i(TAG, "getView : type="+type);
 
-            if (convertView == null) {
-                view = mInflater.inflate(R.layout.item_note_interest, parent, false);
-                holder = new ViewHolder();
-                holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
-                holder.id = (TextView) view.findViewById(R.id.item_interest_id);
-                holder.title = (TextView) view.findViewById(R.id.item_interest_title);
-                holder.text = (TextView) view.findViewById(R.id.item_interest_text);
-                view.setTag(holder);
+        if (convertView == null) {
+            holder = new ViewHolder();
+            if(type == VIEW_TYPE_NOTE) {
+                Log.i(TAG, "getView 1 : convertView=null so create new ViewHolder");
+                convertView = mInflater.inflate(R.layout.item_note_interest, parent, false);
+                holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
+                holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
+                holder.title = (TextView) convertView.findViewById(R.id.item_interest_title);
+                holder.text = (TextView) convertView.findViewById(R.id.item_interest_text);
             } else {
-                view = convertView;
-                holder = (ViewHolder) view.getTag();
+                Log.i(TAG, "getView 2 : convertView=null so create new ViewHolder");
+                convertView = mInflater.inflate(R.layout.item_geo_interest, parent, false);
+                holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
+                holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
+                holder.title = (TextView) convertView.findViewById(R.id.item_interest_title);
+                holder.longitude = (TextView) convertView.findViewById(R.id.item_interest_longitude);
+                holder.latitude = (TextView) convertView.findViewById(R.id.item_interest_latitude);
             }
-
-            Interest interest = mInterests.get(position);
-
-            holder.id.setText(String.valueOf(interest.getId()));
-            holder.title.setText(interest.getTitle() + " - " + interest.getType());
-            holder.text.setText(interest.getText());
-
+            convertView.setTag(holder);
         } else {
-
-            if (convertView == null) {
-                view = mInflater.inflate(R.layout.item_geo_interest, parent, false);
-                holder = new ViewHolder();
-                holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
-                holder.id = (TextView) view.findViewById(R.id.item_interest_id);
-                holder.title = (TextView) view.findViewById(R.id.item_interest_title);
-                holder.longitude = (TextView) view.findViewById(R.id.item_interest_longitude);
-                holder.latitude = (TextView) view.findViewById(R.id.item_interest_latitude);
-                view.setTag(holder);
-            } else {
-                view = convertView;
-                holder = (ViewHolder) view.getTag();
-            }
-
-            Interest interest = mInterests.get(position);
-
-            holder.id.setText(String.valueOf(interest.getId()));
-            holder.title.setText(interest.getTitle() + " - " + interest.getType());
-            holder.longitude.setText(String.valueOf(interest.getLongitude()));
-            holder.latitude.setText(String.valueOf(interest.getLatitude()));
-
+            Log.i(TAG, "getView 1 : convertView!=null so get tag ViewHolder");
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        return view;
-    }
+        Interest interest = mInterests.get(position);
 
-    private class ViewNoteHolder {
-        public NetworkImageView image;
-        public TextView id;
-        public TextView title;
-        public TextView text;
-    }
+        holder.id.setText(String.valueOf(interest.getId()));
+        holder.title.setText(interest.getTitle() + " - " + interest.getType());
 
-    private class ViewGeoHolder {
-        public NetworkImageView image;
-        public TextView id;
-        public TextView title;
-        public TextView longitude;
-        public TextView latitude;
+        if(type == VIEW_TYPE_NOTE) {
+            holder.type = VIEW_TYPE_NOTE;
+            holder.text.setText(interest.getText());
+        } else {
+            holder.type = VIEW_TYPE_GEO;
+            holder.longitude.setText(String.valueOf(interest.getLongitude()));
+            holder.latitude.setText(String.valueOf(interest.getLatitude()));
+        }
+
+        return convertView;
     }
 
     private class ViewHolder {
+        public int type;
         public NetworkImageView image;
         public TextView id;
         public TextView title;
