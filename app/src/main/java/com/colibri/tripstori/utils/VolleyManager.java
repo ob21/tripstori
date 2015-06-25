@@ -70,8 +70,7 @@ public class VolleyManager {
     public static ImageLoader getImageLoader() {
         if (sInstance == null) {
             throw new IllegalStateException("The VolleyManager must be initialized.");
-        }
-        return sInstance.mImageLoader;
+        }        return sInstance.mImageLoader;
     }
 
     public static VolleyManager getInstance() {

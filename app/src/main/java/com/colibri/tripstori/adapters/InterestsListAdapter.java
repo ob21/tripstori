@@ -138,6 +138,7 @@ public class InterestsListAdapter extends BaseAdapter {
 
         holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
+        holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
 
         if(type == VIEW_TYPE_NOTE) {
             holder.type = VIEW_TYPE_NOTE;
