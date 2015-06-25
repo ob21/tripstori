@@ -25,7 +25,8 @@ public class InterestsDataSource {
     private SQLiteDatabase database;
     private TSDbHelper dbHelper;
     private String[] allColumns = { TSDbHelper.COLUMN_ID,
-            TSDbHelper.COLUMN_TITLE, TSDbHelper.COLUMN_TYPE, TSDbHelper.COLUMN_LONGITUDE, TSDbHelper.COLUMN_LATITUDE,
+            TSDbHelper.COLUMN_TITLE, TSDbHelper.COLUMN_TYPE, TSDbHelper.COLUMN_IMGURL, TSDbHelper.COLUMN_WEBURL,
+            TSDbHelper.COLUMN_LONGITUDE, TSDbHelper.COLUMN_LATITUDE,
             TSDbHelper.COLUMN_TEXT};
 
     public InterestsDataSource(Context context) {
@@ -44,6 +45,8 @@ public class InterestsDataSource {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_IMGURL, "");
+        values.put(TSDbHelper.COLUMN_WEBURL, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, longitude);
         values.put(TSDbHelper.COLUMN_LATITUDE, latitude);
         values.put(TSDbHelper.COLUMN_TEXT, "");
@@ -62,6 +65,48 @@ public class InterestsDataSource {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_IMGURL, "");
+        values.put(TSDbHelper.COLUMN_WEBURL, "");
+        values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
+        values.put(TSDbHelper.COLUMN_LATITUDE, 0);
+        values.put(TSDbHelper.COLUMN_TEXT, text);
+        long insertId = database.insert(TSDbHelper.TABLE_INTERESTS, null,
+                values);
+        Cursor cursor = database.query(TSDbHelper.TABLE_INTERESTS,
+                allColumns, TSDbHelper.COLUMN_ID + " = " + insertId, null,
+                null, null, null);
+        cursor.moveToFirst();
+        Interest newInterest= cursorToInterest(cursor);
+        cursor.close();
+        return newInterest;
+    }
+
+    public Interest createImageInterest(String title, Interest.Type type, String imgUrl, String text) {
+        ContentValues values = new ContentValues();
+        values.put(TSDbHelper.COLUMN_TITLE, title);
+        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_IMGURL, imgUrl);
+        values.put(TSDbHelper.COLUMN_WEBURL, "");
+        values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
+        values.put(TSDbHelper.COLUMN_LATITUDE, 0);
+        values.put(TSDbHelper.COLUMN_TEXT, text);
+        long insertId = database.insert(TSDbHelper.TABLE_INTERESTS, null,
+                values);
+        Cursor cursor = database.query(TSDbHelper.TABLE_INTERESTS,
+                allColumns, TSDbHelper.COLUMN_ID + " = " + insertId, null,
+                null, null, null);
+        cursor.moveToFirst();
+        Interest newInterest= cursorToInterest(cursor);
+        cursor.close();
+        return newInterest;
+    }
+
+    public Interest createWebInterest(String title, Interest.Type type, String webUrl, String text) {
+        ContentValues values = new ContentValues();
+        values.put(TSDbHelper.COLUMN_TITLE, title);
+        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_IMGURL, "");
+        values.put(TSDbHelper.COLUMN_WEBURL, webUrl);
         values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
         values.put(TSDbHelper.COLUMN_LATITUDE, 0);
         values.put(TSDbHelper.COLUMN_TEXT, text);
@@ -110,9 +155,11 @@ public class InterestsDataSource {
         Interest interest = new Interest(cursor.getLong(0),
                 cursor.getString(1),
                 Interest.typeFromInt(cursor.getInt(2)),
-                cursor.getDouble(3),
-                cursor.getDouble(4),
-                cursor.getString(5));
+                cursor.getString(3),
+                cursor.getString(4),
+                cursor.getDouble(5),
+                cursor.getDouble(6),
+                cursor.getString(7));
         return interest;
     }
 }

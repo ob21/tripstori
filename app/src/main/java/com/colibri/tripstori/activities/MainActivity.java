@@ -85,6 +85,18 @@ public class MainActivity extends TSActivity {
             mListAdapter.notifyDataSetChanged();
             return true;
         }
+        if (id == R.id.action_add_img) {
+            mDatasource.createImageInterest("title img "+currentDateandTime, Interest.Type.IMAGE, InterestsListAdapter.IMAGE_URL, "image comment");
+            mListAdapter.setInterests(mDatasource.getAllInterests());
+            mListAdapter.notifyDataSetChanged();
+            return true;
+        }
+        if (id == R.id.action_add_web) {
+            mDatasource.createWebInterest("title web "+currentDateandTime, Interest.Type.WEB, "http://google.fr", "web comment");
+            mListAdapter.setInterests(mDatasource.getAllInterests());
+            mListAdapter.notifyDataSetChanged();
+            return true;
+        }
         if (id == R.id.action_delete_all) {
             mDatasource.deleteAllInterests();
             mListAdapter.setInterests(mDatasource.getAllInterests());
