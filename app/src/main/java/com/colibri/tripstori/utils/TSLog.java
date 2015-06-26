@@ -8,35 +8,31 @@ import android.util.Log;
  */
 public class TSLog {
 
-    private boolean mDebug = false;
-
-    public void setDebug(boolean d) {
-        mDebug = d;
-    }
+    private static boolean mDebug = false;
 
 
-    public void verb(String c, String m) {
+    public static void verb(String t, String m) {
         if(mDebug)
-            Log.v(c, m);
+            Log.v(t, m);
     }
 
-    public void debug(String c, String m) {
+    public static void debug(String t, String m) {
         if(mDebug)
-            Log.d(c, m);
+            Log.d(t, m);
     }
 
-    public void info(String c, String m) {
+    public static void info(String t, String m) {
         if(mDebug)
-            Log.i(c, m);
+            Log.i(t, m);
     }
 
-    public void warn(String c, String m) {
+    public static void warn(String t, String m) {
         if(mDebug)
-            Log.w(c, m);
+            Log.w(t, m);
     }
 
-    public void error(String c, String m) {
-        Log.e(c, m);
+    public static void error(String t, String m) {
+        Log.e(t, m);
     }
 
 }
