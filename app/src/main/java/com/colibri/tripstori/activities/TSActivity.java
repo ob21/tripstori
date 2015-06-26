@@ -9,24 +9,4 @@ import com.colibri.tripstori.TSApp;
  */
 public class TSActivity  extends ActionBarActivity {
 
-    protected void logv(Class c, String m) {
-        ((TSApp)getApplication()).getLog().verb(c.getName().substring(c.getName().lastIndexOf(".")), m);
-    }
-
-    protected void logd(Class c, String m) {
-        ((TSApp)getApplication()).getLog().debug(c.getName().substring(c.getName().lastIndexOf(".")), m);
-    }
-
-    protected void logi(Class c, String m) {
-        ((TSApp)getApplication()).getLog().info(c.getName().substring(c.getName().lastIndexOf(".")), m);
-    }
-
-    protected void logw(Class c, String m) {
-        ((TSApp)getApplication()).getLog().warn(c.getName().substring(c.getName().lastIndexOf(".")), m);
-    }
-
-    protected void loge(Class c, String m) {
-        ((TSApp)getApplication()).getLog().error(c.getName().substring(c.getName().lastIndexOf(".")) ,m);
-    }
-
 }

@@ -5,4 +5,6 @@ package com.colibri.tripstori;
  */
 public class Constants {
 
-    public static String GOOGLE_MAPS_API_KEY = "AIzaSyDUtowTL0iq8Y85jJtC_5cK24GTSs4ZRTc"; }
+    public static String GOOGLE_MAPS_API_KEY = "AIzaSyDUtowTL0iq8Y85jJtC_5cK24GTSs4ZRTc";
+
+}

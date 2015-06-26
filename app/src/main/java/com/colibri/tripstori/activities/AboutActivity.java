@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.colibri.tripstori.R;
+import com.colibri.tripstori.utils.TSLog;
 
 /**
  * Created by olivierbriand on 08/06/2015.
@@ -16,7 +17,7 @@ public class AboutActivity extends TSActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        logi(getClass(), "onCreate about");
+        TSLog.info(getClass().getName(), "onCreate about");
     }
 
 

@@ -14,6 +14,7 @@ import com.colibri.tripstori.R;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
 import com.colibri.tripstori.database.InterestsDataSource;
 import com.colibri.tripstori.model.Interest;
+import com.colibri.tripstori.utils.TSLog;
 import com.colibri.tripstori.utils.VolleyManager;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class MainActivity extends TSActivity {
         mListAdapter = new InterestsListAdapter(this, mDatasource.getAllInterests());
         mInterestsList.setAdapter(mListAdapter);
 
-        logi(getClass(), "onCreate");
+        TSLog.info(getClass().getName(), "onCreate");
     }
 
     @Override
@@ -86,13 +87,13 @@ public class MainActivity extends TSActivity {
             return true;
         }
         if (id == R.id.action_add_img) {
-            mDatasource.createImageInterest("title img "+currentDateandTime, Interest.Type.IMAGE, InterestsListAdapter.IMAGE_URL, "image comment");
+            mDatasource.createImageInterest("title img " + currentDateandTime, Interest.Type.IMAGE, InterestsListAdapter.IMAGE_URL, "image comment");
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_web) {
-            mDatasource.createWebInterest("title web "+currentDateandTime, Interest.Type.WEB, "http://google.fr", "web comment");
+            mDatasource.createWebInterest("title web " + currentDateandTime, Interest.Type.WEB, "http://google.fr", "web comment");
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
             return true;

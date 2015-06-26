@@ -26,6 +26,7 @@ public class InterestsListAdapter extends BaseAdapter {
             "http://developer.android.com/images/training/system-ui.png";
     public static final String IMAGE1_URL =
             "http://www.setgoogle.com/images/domain/homepage/google_icon/google_play.png";
+    public static final String MAPS_URL = "https://maps.googleapis.com/maps/api/staticmap?center=40.714728,-73.998672&zoom=12&size=400x400";
     private static final int VIEW_TYPE_NONE = 0;
     private static final int VIEW_TYPE_NOTE = 1;
     private static final int VIEW_TYPE_GEO = 2;
@@ -138,7 +139,7 @@ public class InterestsListAdapter extends BaseAdapter {
 
         holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
-        holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+        holder.image.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
 
         if(type == VIEW_TYPE_NOTE) {
             holder.type = VIEW_TYPE_NOTE;

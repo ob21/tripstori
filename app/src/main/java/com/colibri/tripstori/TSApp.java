@@ -12,15 +12,7 @@ public class TSApp extends Application {
 
     private static final String TAG = "TSApp";
 
-    private TSLog mLogger;
-
     public TSApp() {
-        mLogger = new TSLog();
-        mLogger.setDebug(true);
-    }
-
-    public TSLog getLog() {
-        return mLogger;
     }
 
     @Override
