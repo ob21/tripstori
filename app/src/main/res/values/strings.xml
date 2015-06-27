@@ -8,6 +8,7 @@
     <string name="action_add_img">Add image</string>
     <string name="action_add_web">Add web page</string>
     <string name="action_delete_all">Delete all</string>
+    <string name="action_pdf">PDF</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
 </resources>

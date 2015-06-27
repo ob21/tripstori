@@ -12,12 +12,14 @@ import com.colibri.tripstori.utils.TSLog;
  */
 public class AboutActivity extends TSActivity {
 
+    private final String TAG = getClass().getName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        TSLog.info(getClass().getName(), "onCreate about");
+        TSLog.info(TAG, "onCreate about");
     }
 
 

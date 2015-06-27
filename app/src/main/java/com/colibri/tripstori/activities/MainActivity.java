@@ -2,9 +2,12 @@ package com.colibri.tripstori.activities;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -17,6 +20,9 @@ import com.colibri.tripstori.model.Interest;
 import com.colibri.tripstori.utils.TSLog;
 import com.colibri.tripstori.utils.VolleyManager;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,6 +108,35 @@ public class MainActivity extends TSActivity {
             mDatasource.deleteAllInterests();
             mListAdapter.setInterests(mDatasource.getAllInterests());
             mListAdapter.notifyDataSetChanged();
+            return true;
+        }
+        if (id == R.id.action_pdf) {
+            // create a new document
+            PdfDocument document = new PdfDocument();
+            // crate a page description
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(100,100, 1).create();
+            // start a page
+            PdfDocument.Page page = document.startPage(pageInfo);
+            // draw something on the page
+            View content = findViewById(android.R.id.content);
+            content.draw(page.getCanvas());
+            // finish the page
+            document.finishPage(page);
+            // add more pages
+            // write the document content
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream("file.pdf");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                document.writeTo(fos);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // close the document
+            document.close();
             return true;
         }
         if (id == R.id.action_settings) {
