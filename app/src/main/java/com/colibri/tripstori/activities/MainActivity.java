@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -19,18 +21,31 @@ import com.colibri.tripstori.database.InterestsDataSource;
 import com.colibri.tripstori.model.Interest;
 import com.colibri.tripstori.utils.TSLog;
 import com.colibri.tripstori.utils.VolleyManager;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import crl.android.pdfwriter.PDFWriter;
+import crl.android.pdfwriter.PaperSize;
+import crl.android.pdfwriter.StandardFonts;
+import crl.android.pdfwriter.Transformation;
+
+
 public class MainActivity extends TSActivity {
 
+    private static final String TAG = "MainActivity";
     private ListView mInterestsList;
     private InterestsListAdapter mListAdapter;
 
@@ -111,32 +126,9 @@ public class MainActivity extends TSActivity {
             return true;
         }
         if (id == R.id.action_pdf) {
-            // create a new document
-            PdfDocument document = new PdfDocument();
-            // crate a page description
-            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(100,100, 1).create();
-            // start a page
-            PdfDocument.Page page = document.startPage(pageInfo);
-            // draw something on the page
-            View content = findViewById(android.R.id.content);
-            content.draw(page.getCanvas());
-            // finish the page
-            document.finishPage(page);
-            // add more pages
-            // write the document content
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream("file.pdf");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            try {
-                document.writeTo(fos);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            // close the document
-            document.close();
+            Toast.makeText(this, "make pdf", Toast.LENGTH_LONG).show();
+            //createPdfIText();
+            createPdfApw();
             return true;
         }
         if (id == R.id.action_settings) {
@@ -148,5 +140,68 @@ public class MainActivity extends TSActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createPdfApw() {
+        PDFWriter mPDFWriter = new PDFWriter(PaperSize.A4_WIDTH, PaperSize.A4_HEIGHT); // 595 x 842
+        mPDFWriter.setFont(StandardFonts.SUBTYPE, StandardFonts.HELVETICA);
+        mPDFWriter.addText(40, 800, 18, "pdf for tripstori");
+        outputToFile("helloworld.pdf", mPDFWriter.asString(), "ISO-8859-1");
+    }
+
+    private void outputToFile(String fileName, String pdfContent, String encoding) {
+        File newFile = new File(Environment.getExternalStorageDirectory() + "/download/" + fileName);
+        try {
+            newFile.createNewFile();
+            try {
+                FileOutputStream pdfFile = new FileOutputStream(newFile);
+                pdfFile.write(pdfContent.getBytes(encoding));
+                pdfFile.close();
+            } catch(FileNotFoundException e) {
+                //
+            }
+        } catch(IOException e) {
+            //
+        }
+    }
+
+    private void createPdfIText() {
+
+        File root = android.os.Environment.getExternalStorageDirectory();
+        File dir = new File (root.getAbsolutePath() + "/download");
+        dir.mkdirs();
+        File file = new File(dir, "HelloiText.pdf");
+
+        OutputStream output = null;
+        try {
+            output = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //Step 1
+        Document document = new Document();
+
+        //Step 2
+        try {
+            PdfWriter.getInstance(document, output);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        //Step 3
+        document.open();
+
+        //Step 4 Add content
+        try {
+            document.add(new Paragraph("subject"));
+            document.add(new Paragraph("body"));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        //Step 5: Close the document
+        document.close();
+
     }
 }
