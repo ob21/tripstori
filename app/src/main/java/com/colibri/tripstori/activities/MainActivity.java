@@ -145,7 +145,10 @@ public class MainActivity extends TSActivity {
     private void createPdfApw() {
         PDFWriter mPDFWriter = new PDFWriter(PaperSize.A4_WIDTH, PaperSize.A4_HEIGHT); // 595 x 842
         mPDFWriter.setFont(StandardFonts.SUBTYPE, StandardFonts.HELVETICA);
-        mPDFWriter.addText(40, 800, 18, "pdf for tripstori");
+        mPDFWriter.addText(40, 800, 18, "pdf for tripstori"); // place here the right location for text
+        //mPDFWriter.addImage();
+        //mPDFWriter.addLine();
+        //mPDFWriter.addRectangle();
         outputToFile("helloworld.pdf", mPDFWriter.asString(), "ISO-8859-1");
     }
 
