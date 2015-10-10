@@ -1,9 +1,11 @@
 package com.colibri.tripstori.activities;
 
 import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -127,8 +129,7 @@ public class MainActivity extends TSActivity {
         }
         if (id == R.id.action_pdf) {
             Toast.makeText(this, "make pdf", Toast.LENGTH_LONG).show();
-            //createPdfIText();
-            createPdfApw();
+            createPdf();
             return true;
         }
         if (id == R.id.action_settings) {
@@ -142,17 +143,24 @@ public class MainActivity extends TSActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void createPdfApw() {
+    private void createPdf() {
         PDFWriter mPDFWriter = new PDFWriter(PaperSize.A4_WIDTH, PaperSize.A4_HEIGHT); // 595 x 842
         mPDFWriter.setFont(StandardFonts.SUBTYPE, StandardFonts.HELVETICA);
         mPDFWriter.addText(40, 800, 18, "pdf for tripstori"); // place here the right location for text
+        mPDFWriter.setFont(StandardFonts.TIMES_BOLD, StandardFonts.HELVETICA_BOLD);
+        mPDFWriter.addText(80, 750, 18, "pdf for tripstori 2");
+        mPDFWriter.newPage();
+        mPDFWriter.setFont(StandardFonts.COURIER, StandardFonts.COURIER_OBLIQUE);
+        mPDFWriter.addText(40, 700, 30, "pdf for tripstori 3");
+        mPDFWriter.addLine(40, 650, 550, 650);
+        mPDFWriter.addRectangle(40, 200, 400, 200); //fromLeft, frombottom, largeur, hauteur
         //mPDFWriter.addImage();
-        //mPDFWriter.addLine();
-        //mPDFWriter.addRectangle();
-        outputToFile("helloworld.pdf", mPDFWriter.asString(), "ISO-8859-1");
+        File file = createFile("helloworld.pdf", mPDFWriter.asString(), "ISO-8859-1");
+        openFile(file);
+
     }
 
-    private void outputToFile(String fileName, String pdfContent, String encoding) {
+    private File createFile(String fileName, String pdfContent, String encoding) {
         File newFile = new File(Environment.getExternalStorageDirectory() + "/download/" + fileName);
         try {
             newFile.createNewFile();
@@ -166,45 +174,19 @@ public class MainActivity extends TSActivity {
         } catch(IOException e) {
             //
         }
+        return newFile;
+
     }
 
-    private void createPdfIText() {
-
-        File root = android.os.Environment.getExternalStorageDirectory();
-        File dir = new File (root.getAbsolutePath() + "/download");
-        dir.mkdirs();
-        File file = new File(dir, "HelloiText.pdf");
-
-        OutputStream output = null;
+    private void openFile(File file) {
+        Uri path = Uri.fromFile(file);
+        Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
+        pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        pdfOpenintent.setDataAndType(path, "application/pdf");
         try {
-            output = new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            startActivity(pdfOpenintent);
+        } catch (ActivityNotFoundException e) {
+
         }
-
-        //Step 1
-        Document document = new Document();
-
-        //Step 2
-        try {
-            PdfWriter.getInstance(document, output);
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
-
-        //Step 3
-        document.open();
-
-        //Step 4 Add content
-        try {
-            document.add(new Paragraph("subject"));
-            document.add(new Paragraph("body"));
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
-
-        //Step 5: Close the document
-        document.close();
-
     }
 }

@@ -84,8 +84,8 @@ public class PDFWriter {
 		mCurrentPage.addLine(fromLeft, fromBottom, toLeft, toBottom);
 	}
 	
-	public void addRectangle(int fromLeft, int fromBottom, int toLeft, int toBottom) {
-		mCurrentPage.addRectangle(fromLeft, fromBottom, toLeft, toBottom);
+	public void addRectangle(int fromLeft, int fromBottom, int width, int height) {
+		mCurrentPage.addRectangle(fromLeft, fromBottom, width, height);
 	}
 
 	public void addImage(int fromLeft, int fromBottom, Bitmap bitmap) {
