@@ -10,7 +10,8 @@ public class TSApp extends Application {
 
     private static final String TAG = "TSApp";
     private static final String APP = "TS";
-    private static boolean mDebug = false;
+
+    private static boolean mDebug = true;
 
     public TSApp() {
     }
