@@ -1,7 +1,11 @@
 package com.colibri.tripstori;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.util.Log;
+
+import com.colibri.tripstori.manager.DataManager;
+import com.colibri.tripstori.utils.VolleyManager;
 
 /**
  * Created by olivierbriand on 05/06/2015.
@@ -9,7 +13,7 @@ import android.util.Log;
 public class TSApp extends Application {
 
     private static final String TAG = "TSApp";
-    private static final String APP = "TS";
+    private static final String APP = "#ts";
 
     private static boolean mDebug = true;
 
@@ -19,7 +23,15 @@ public class TSApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        logInfo(TAG, "onCreate");    }
+        logInfo(TAG, "onCreate");
+        DataManager.getInstance().init(getApplicationContext());
+
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        int heapSize = am.getMemoryClass();
+        VolleyManager.init(this, (heapSize * 1024 * 1024 / 8));
+
+
+    }
 
 
     public static void logVerbose(String t, String m) {

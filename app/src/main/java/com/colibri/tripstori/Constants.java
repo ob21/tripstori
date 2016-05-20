@@ -1,7 +1,7 @@
 package com.colibri.tripstori;
 
 /**
- * Created by olivierbriand on 26/06/2015.
+ * Created by Olivier Briand on 26/06/2015.
  */
 public class Constants {
 
