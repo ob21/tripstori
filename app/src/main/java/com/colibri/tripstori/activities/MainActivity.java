@@ -3,46 +3,31 @@ package com.colibri.tripstori.activities;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
 import com.colibri.tripstori.R;
+import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
 import com.colibri.tripstori.database.InterestsDataSource;
 import com.colibri.tripstori.model.Interest;
-import com.colibri.tripstori.utils.TSLog;
 import com.colibri.tripstori.utils.VolleyManager;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 import crl.android.pdfwriter.PDFWriter;
 import crl.android.pdfwriter.PaperSize;
 import crl.android.pdfwriter.StandardFonts;
-import crl.android.pdfwriter.Transformation;
 
 
 public class MainActivity extends TSActivity {
@@ -69,7 +54,7 @@ public class MainActivity extends TSActivity {
         mListAdapter = new InterestsListAdapter(this, mDatasource.getAllInterests());
         mInterestsList.setAdapter(mListAdapter);
 
-        TSLog.info(getClass().getName(), "onCreate");
+        TSApp.logInfo(getClass().getName(), "onCreate");
     }
 
     @Override
