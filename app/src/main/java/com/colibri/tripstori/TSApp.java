@@ -17,20 +17,11 @@ public class TSApp extends Application {
 
     private static boolean mDebug = true;
 
-    public TSApp() {
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        logInfo(TAG, "onCreate");
+        logDebug(TAG, "onCreate");
         DataManager.getInstance().init(getApplicationContext());
-
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        int heapSize = am.getMemoryClass();
-        VolleyManager.init(this, (heapSize * 1024 * 1024 / 8));
-
-
     }
 
 

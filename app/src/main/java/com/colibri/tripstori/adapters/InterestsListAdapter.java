@@ -1,17 +1,15 @@
 package com.colibri.tripstori.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.colibri.tripstori.R;
+import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.model.Interest;
 import com.colibri.tripstori.utils.VolleyManager;
 
@@ -22,17 +20,18 @@ import java.util.ArrayList;
  */
 public class InterestsListAdapter extends BaseAdapter {
 
+    private static final String TAG = "InterestsListAdapter";
+
     public static final String IMAGE_URL =
-            "http://developer.android.com/images/training/system-ui.png";
-    public static final String IMAGE1_URL =
-            "http://www.setgoogle.com/images/domain/homepage/google_icon/google_play.png";
+            "https://developer.android.com/images/training/system-ui.png";
+
     public static final String MAPS_URL = "https://maps.googleapis.com/maps/api/staticmap?center=40.714728,-73.998672&zoom=12&size=400x400";
+
     private static final int VIEW_TYPE_NONE = 0;
     private static final int VIEW_TYPE_NOTE = 1;
     private static final int VIEW_TYPE_GEO = 2;
     private static final int VIEW_TYPE_IMAGE = 3;
     private static final int VIEW_TYPE_WEB = 4;
-    private static final String TAG = "InterestsListAdapter";
 
     private ArrayList<Interest> mInterests = new ArrayList<>();
     private LayoutInflater mInflater;
@@ -86,18 +85,18 @@ public class InterestsListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Log.i(TAG, "getView : position="+position);
+        TSApp.logDebug(TAG, "getView : position="+position);
 
         ViewHolder holder = null;
 
         int type = getItemViewType(position);
 
-        Log.i(TAG, "getView : type="+type);
+        TSApp.logDebug(TAG, "getView : type="+type);
 
         if (convertView == null) {
             holder = new ViewHolder();
             if(type == VIEW_TYPE_NOTE) {
-                Log.i(TAG, "getView 1 : convertView=null so create new ViewHolder");
+                TSApp.logDebug(TAG, "getView 1 : convertView=null so create new ViewHolder");
                 convertView = mInflater.inflate(R.layout.item_note_interest, parent, false);
                 holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
                 holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
@@ -105,7 +104,7 @@ public class InterestsListAdapter extends BaseAdapter {
                 holder.text = (TextView) convertView.findViewById(R.id.item_interest_text);
             } else
             if(type == VIEW_TYPE_GEO){
-                Log.i(TAG, "getView 2 : convertView=null so create new ViewHolder");
+                TSApp.logDebug(TAG, "getView 2 : convertView=null so create new ViewHolder");
                 convertView = mInflater.inflate(R.layout.item_geo_interest, parent, false);
                 holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
                 holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
@@ -114,7 +113,7 @@ public class InterestsListAdapter extends BaseAdapter {
                 holder.latitude = (TextView) convertView.findViewById(R.id.item_interest_latitude);
             } else
             if(type == VIEW_TYPE_IMAGE){
-                Log.i(TAG, "getView 3 : convertView=null so create new ViewHolder");
+                TSApp.logDebug(TAG, "getView 3 : convertView=null so create new ViewHolder");
                 convertView = mInflater.inflate(R.layout.item_image_interest, parent, false);
                 holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
                 holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
@@ -122,7 +121,7 @@ public class InterestsListAdapter extends BaseAdapter {
                 holder.img = (TextView) convertView.findViewById(R.id.item_interest_img);
             } else
             if(type == VIEW_TYPE_WEB){
-                Log.i(TAG, "getView 4 : convertView=null so create new ViewHolder");
+                TSApp.logDebug(TAG, "getView 4 : convertView=null so create new ViewHolder");
                 convertView = mInflater.inflate(R.layout.item_web_interest, parent, false);
                 holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
                 holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
@@ -131,7 +130,7 @@ public class InterestsListAdapter extends BaseAdapter {
             }
             convertView.setTag(holder);
         } else {
-            Log.i(TAG, "getView 1 : convertView!=null so get tag ViewHolder");
+            TSApp.logDebug(TAG, "getView 1 : convertView!=null so get tag ViewHolder");
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -139,24 +138,29 @@ public class InterestsListAdapter extends BaseAdapter {
 
         holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
-        holder.image.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
+        holder.image.setDefaultImageResId(R.drawable.placeholder);
+        holder.image.setErrorImageResId(R.drawable.error);
 
         if(type == VIEW_TYPE_NOTE) {
             holder.type = VIEW_TYPE_NOTE;
             holder.text.setText(interest.getText());
+            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
         } else
         if(type == VIEW_TYPE_GEO) {
             holder.type = VIEW_TYPE_GEO;
             holder.longitude.setText(String.valueOf(interest.getLongitude()));
             holder.latitude.setText(String.valueOf(interest.getLatitude()));
+            holder.image.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
         } else
         if(type == VIEW_TYPE_IMAGE) {
             holder.type = VIEW_TYPE_IMAGE;
             holder.img.setText(String.valueOf(interest.getImageUrl()));
+            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
         } else
         if(type == VIEW_TYPE_WEB) {
             holder.type = VIEW_TYPE_WEB;
             holder.web.setText(String.valueOf(interest.getWebUrl()));
+            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
         }
 
         return convertView;
