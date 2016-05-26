@@ -34,4 +34,9 @@ public class TSActivity  extends AppCompatActivity {
     protected InterestsDataSource getDataSource(){
         return mDataSource;
     }
+
+    protected DataManager getDataManager(){
+        return DataManager.getInstance();
+    }
+
 }
