@@ -39,7 +39,7 @@ public class MainActivity extends TSActivity {
         setContentView(R.layout.activity_main);
 
         mInterestsList = (ListView)findViewById(R.id.interests_lv);
-        mListAdapter = new InterestsListAdapter(this, getDataSource().getAllInterests());
+        mListAdapter = new InterestsListAdapter(this, getDataManager().getInterests());
         mInterestsList.setAdapter(mListAdapter);
 
         TSApp.logInfo(getClass().getName(), "onCreate");
@@ -71,26 +71,26 @@ public class MainActivity extends TSActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_note) {
-            getDataSource().createNoteInterest("title note "+currentDateandTime, Interest.Type.NOTE, "text description "+currentDateandTime);
-            mListAdapter.setInterests(getDataSource().getAllInterests());
+            getDataManager().createNoteInterest("title note "+currentDateandTime, Interest.Type.NOTE, "text description "+currentDateandTime);
+            mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_geo) {
-            getDataSource().createGeoInterest("title geo "+currentDateandTime, Interest.Type.GEO, 24.345, 47.456);
-            mListAdapter.setInterests(getDataSource().getAllInterests());
+            getDataManager().createGeoInterest("title geo "+currentDateandTime, Interest.Type.GEO, 24.345, 47.456);
+            mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_img) {
-            getDataSource().createImageInterest("title img " + currentDateandTime, Interest.Type.IMAGE, InterestsListAdapter.IMAGE_URL, "image comment");
-            mListAdapter.setInterests(getDataSource().getAllInterests());
+            getDataManager().createImageInterest("title img " + currentDateandTime, Interest.Type.IMAGE, InterestsListAdapter.IMAGE_URL, "image comment");
+            mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_web) {
-            getDataSource().createWebInterest("title web " + currentDateandTime, Interest.Type.WEB, "http://google.fr", "web comment");
-            mListAdapter.setInterests(getDataSource().getAllInterests());
+            getDataManager().createWebInterest("title web " + currentDateandTime, Interest.Type.WEB, "http://google.fr", "web comment");
+            mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
