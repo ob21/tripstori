@@ -136,7 +136,7 @@ public class InterestsListAdapter extends BaseAdapter {
 
         Interest interest = mInterests.get(position);
 
-        holder.id.setText(String.valueOf(interest.getId()));
+        holder.id.setText("id="+String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
         holder.image.setDefaultImageResId(R.drawable.photo);
         holder.image.setErrorImageResId(R.drawable.photo);

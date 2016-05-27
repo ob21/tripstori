@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/item_list_margin"
@@ -20,6 +20,7 @@
             android:id="@+id/item_interest_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/item_interest_niv"
             style="@style/TextH1Bold"
             android:text="New Text"/>
 
@@ -27,6 +28,7 @@
             android:id="@+id/item_interest_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/item_interest_id"
             style="@style/TextDefault"
             android:text="New Text"/>
 
@@ -34,9 +36,10 @@
             android:id="@+id/item_interest_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/item_interest_title"
             style="@style/TextDefault"
             android:text="New Text"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
