@@ -1,11 +1,14 @@
 package com.colibri.tripstori.activities;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,6 +16,8 @@ import com.colibri.tripstori.factory.PDFFactory;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
+import com.colibri.tripstori.fragment.ConfirmDialogFragment;
+import com.colibri.tripstori.manager.DataManager;
 import com.colibri.tripstori.model.Interest;
 
 import java.io.File;
@@ -20,11 +25,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends TSActivity {
+public class MainActivity extends TSActivity implements DialogInterface.OnClickListener, AdapterView.OnItemLongClickListener {
 
     private static final String TAG = "MainActivity";
     private ListView mInterestsList;
     private InterestsListAdapter mListAdapter;
+    private Interest mInterest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,8 @@ public class MainActivity extends TSActivity {
         mInterestsList = (ListView)findViewById(R.id.interests_lv);
         mListAdapter = new InterestsListAdapter(this, getDataManager().getInterests());
         mInterestsList.setAdapter(mListAdapter);
+
+        mInterestsList.setOnItemLongClickListener(this);
 
         TSApp.logInfo(getClass().getName(), "onCreate");
     }
@@ -124,5 +132,20 @@ public class MainActivity extends TSActivity {
         } catch (ActivityNotFoundException e) {
 
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        mInterest = mListAdapter.getItem(position);
+        new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
+        return false;
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        DataManager.getInstance().deleteInterest(mInterest);
+        Toast.makeText(this, "delete : "+mInterest, Toast.LENGTH_SHORT).show();
+        mListAdapter.setInterests(getDataManager().getInterests());
+        mListAdapter.notifyDataSetChanged();
     }
 }

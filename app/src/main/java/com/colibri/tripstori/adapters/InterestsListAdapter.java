@@ -51,7 +51,7 @@ public class InterestsListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Interest getItem(int i) {
         return mInterests.get(i);
     }
 
@@ -139,7 +139,8 @@ public class InterestsListAdapter extends BaseAdapter {
         holder.id.setText(String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
         holder.image.setDefaultImageResId(R.drawable.placeholder);
-        holder.image.setErrorImageResId(R.drawable.error);
+//        holder.image.setErrorImageResId(R.drawable.error);
+        holder.image.setErrorImageResId(R.drawable.photo);
 
         if(type == VIEW_TYPE_NOTE) {
             holder.type = VIEW_TYPE_NOTE;
