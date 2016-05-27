@@ -17,22 +17,15 @@ import com.colibri.tripstori.utils.VolleyManager;
 public class TSActivity  extends AppCompatActivity {
 
     private static final String TAG = "TSActivity";
-    private InterestsDataSource mDataSource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mDataSource = DataManager.getInstance().getDataSource();
-
         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         int heapSize = am.getMemoryClass();
         VolleyManager.init(this, (heapSize * 1024 * 1024 / 8));
         TSApp.logDebug(TAG, "init Volley");
-    }
-
-    protected InterestsDataSource getDataSource(){
-        return mDataSource;
     }
 
     protected DataManager getDataManager(){

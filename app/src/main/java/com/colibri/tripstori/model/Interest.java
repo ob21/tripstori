@@ -189,7 +189,39 @@ public class Interest {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Interest interest = (Interest) o;
+
+        if (mId != interest.mId) return false;
+        if (Double.compare(interest.mLongitude, mLongitude) != 0) return false;
+        if (Double.compare(interest.mLatitude, mLatitude) != 0) return false;
+        if (mtype != interest.mtype) return false;
+        if (mTitle != null ? !mTitle.equals(interest.mTitle) : interest.mTitle != null)
+            return false;
+        if (mImageUrl != null ? !mImageUrl.equals(interest.mImageUrl) : interest.mImageUrl != null)
+            return false;
+        if (mWebUrl != null ? !mWebUrl.equals(interest.mWebUrl) : interest.mWebUrl != null)
+            return false;
+        if (mText != null ? !mText.equals(interest.mText) : interest.mText != null) return false;
+        return mDate != null ? mDate.equals(interest.mDate) : interest.mDate == null;
+
+    }
+
+    @Override
     public String toString() {
-        return mTitle;
+        return "Interest{" +
+                "mId=" + mId +
+                ", mtype=" + mtype +
+                ", mTitle='" + mTitle + '\'' +
+                ", mImageUrl='" + mImageUrl + '\'' +
+                ", mWebUrl='" + mWebUrl + '\'' +
+                ", mLongitude=" + mLongitude +
+                ", mLatitude=" + mLatitude +
+                ", mText='" + mText + '\'' +
+                ", mDate=" + mDate +
+                '}';
     }
 }

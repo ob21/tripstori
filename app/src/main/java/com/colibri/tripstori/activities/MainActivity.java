@@ -4,27 +4,20 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.colibri.tripstori.factory.PDFFactory;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
 import com.colibri.tripstori.model.Interest;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import crl.android.pdfwriter.PDFWriter;
-import crl.android.pdfwriter.PaperSize;
-import crl.android.pdfwriter.StandardFonts;
 
 
 public class MainActivity extends TSActivity {
@@ -95,8 +88,8 @@ public class MainActivity extends TSActivity {
             return true;
         }
         if (id == R.id.action_delete_all) {
-            getDataSource().deleteAllInterests();
-            mListAdapter.setInterests(getDataSource().getAllInterests());
+            getDataManager().deleteInterests();
+            mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
@@ -117,38 +110,8 @@ public class MainActivity extends TSActivity {
     }
 
     private void createPdf() {
-        PDFWriter mPDFWriter = new PDFWriter(PaperSize.A4_WIDTH, PaperSize.A4_HEIGHT); // 595 x 842
-        mPDFWriter.setFont(StandardFonts.SUBTYPE, StandardFonts.HELVETICA);
-        mPDFWriter.addText(40, 800, 18, "pdf for tripstori"); // place here the right location for text
-        mPDFWriter.setFont(StandardFonts.TIMES_BOLD, StandardFonts.HELVETICA_BOLD);
-        mPDFWriter.addText(80, 750, 18, "pdf for tripstori 2");
-        mPDFWriter.newPage();
-        mPDFWriter.setFont(StandardFonts.COURIER, StandardFonts.COURIER_OBLIQUE);
-        mPDFWriter.addText(40, 700, 30, "pdf for tripstori 3");
-        mPDFWriter.addLine(40, 650, 550, 650);
-        mPDFWriter.addRectangle(40, 200, 400, 200); //fromLeft, frombottom, largeur, hauteur
-        //mPDFWriter.addImage();
-        File file = createFile("helloworld.pdf", mPDFWriter.asString(), "ISO-8859-1");
+        File file = PDFFactory.getInstance().createPdf();
         openFile(file);
-
-    }
-
-    private File createFile(String fileName, String pdfContent, String encoding) {
-        File newFile = new File(Environment.getExternalStorageDirectory() + "/download/" + fileName);
-        try {
-            newFile.createNewFile();
-            try {
-                FileOutputStream pdfFile = new FileOutputStream(newFile);
-                pdfFile.write(pdfContent.getBytes(encoding));
-                pdfFile.close();
-            } catch(FileNotFoundException e) {
-                //
-            }
-        } catch(IOException e) {
-            //
-        }
-        return newFile;
-
     }
 
     private void openFile(File file) {

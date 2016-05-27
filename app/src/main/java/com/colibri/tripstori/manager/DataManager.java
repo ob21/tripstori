@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.database.InterestsDataSource;
+import com.colibri.tripstori.model.GeoInterest;
 import com.colibri.tripstori.model.Interest;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class DataManager {
 
         mDataSource = new InterestsDataSource(mContext);
         mDataSource.open();
+
         TSApp.logDebug(TAG, "init create data source : "+mDataSource);
     }
 
@@ -64,5 +66,19 @@ public class DataManager {
         mDataSource.createImageInterest(title, type, imgUrl, text);
     }
 
+    public void deleteInterests() {
+        TSApp.logDebug(TAG, "deleteInterests");
+        mDataSource.deleteAllInterests();
+    }
+
+    public void deleteInterest(Interest interest) {
+        TSApp.logDebug(TAG, "deleteInterest");
+        mDataSource.deleteInterest(interest);
+    }
+
+    public void updateGeoInterest(GeoInterest geoInterest) {
+        TSApp.logDebug(TAG, "updateInterest");
+        mDataSource.updateGeoInterest(geoInterest.getTitle(), geoInterest.getType(), geoInterest.getLongitude(), geoInterest.getLatitude());
+    }
 
 }

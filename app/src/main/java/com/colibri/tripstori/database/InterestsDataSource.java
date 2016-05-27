@@ -61,6 +61,26 @@ public class InterestsDataSource {
         return newInterest;
     }
 
+    public Interest updateGeoInterest(String title, Interest.Type type, double longitude, double latitude) {
+        ContentValues values = new ContentValues();
+        values.put(TSDbHelper.COLUMN_TITLE, title);
+        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_IMGURL, "");
+        values.put(TSDbHelper.COLUMN_WEBURL, "");
+        values.put(TSDbHelper.COLUMN_LONGITUDE, longitude);
+        values.put(TSDbHelper.COLUMN_LATITUDE, latitude);
+        values.put(TSDbHelper.COLUMN_TEXT, "");
+        long replaceId = database.replace(TSDbHelper.TABLE_INTERESTS, null,
+                values);
+        Cursor cursor = database.query(TSDbHelper.TABLE_INTERESTS,
+                allColumns, TSDbHelper.COLUMN_ID + " = " + replaceId, null,
+                null, null, null);
+        cursor.moveToFirst();
+        Interest updatedInterest= cursorToInterest(cursor);
+        cursor.close();
+        return updatedInterest;
+    }
+
     public Interest createNoteInterest(String title, Interest.Type type, String text) {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
