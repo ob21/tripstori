@@ -1,6 +1,9 @@
 package com.colibri.tripstori.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
+import com.colibri.tripstori.activities.MainActivity;
 import com.colibri.tripstori.model.Interest;
 import com.colibri.tripstori.utils.VolleyManager;
 
@@ -18,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Created by olivierbriand on 09/06/2015.
  */
-public class InterestsListAdapter extends BaseAdapter {
+public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdapter.InterestViewHolder> {
 
     private static final String TAG = "InterestsListAdapter";
 
@@ -34,30 +38,114 @@ public class InterestsListAdapter extends BaseAdapter {
     private static final int VIEW_TYPE_WEB = 4;
 
     private ArrayList<Interest> mInterests = new ArrayList<>();
+    private MainActivity mActivity;
     private LayoutInflater mInflater;
 
-    public InterestsListAdapter(Context context, ArrayList<Interest> interests) {
-        mInflater = LayoutInflater.from(context);
+    public InterestsListAdapter(MainActivity activity, ArrayList<Interest> interests) {
+        TSApp.logDebug(TAG, "InterestsListAdapter : interests nb = "+interests.size());
+        mActivity = activity;
+        mInflater = LayoutInflater.from(activity);
         mInterests = interests;
     }
 
     public void setInterests(ArrayList<Interest> interests) {
+        TSApp.logDebug(TAG, "setInterests");
         mInterests = interests;
     }
 
-    @Override
-    public int getCount() {
-        return mInterests.size();
-    }
-
-    @Override
     public Interest getItem(int i) {
         return mInterests.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return mInterests.get(i).getId();
+    }
+
+    @Override
+    public int getItemCount() {
+        return mInterests.size();
+    }
+
+    @Override
+    public InterestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        TSApp.logDebug(TAG, "onCreateViewHolder");
+        View view;
+        InterestViewHolder holder = null;
+        // create a new view
+        if(viewType == VIEW_TYPE_NOTE) {
+            TSApp.logDebug(TAG, "onCreateViewHolder 1");
+            view = mInflater.inflate(R.layout.item_note_interest, parent, false);
+            holder = new InterestViewHolder(view);
+            holder.type = VIEW_TYPE_NOTE;
+            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.id = (TextView) view.findViewById(R.id.item_interest_id);
+            holder.title = (TextView) view.findViewById(R.id.item_interest_title);
+            holder.text = (TextView) view.findViewById(R.id.item_interest_text);
+        } else
+        if(viewType == VIEW_TYPE_GEO){
+            TSApp.logDebug(TAG, "onCreateViewHolder 2");
+            view = mInflater.inflate(R.layout.item_geo_interest, parent, false);
+            holder = new InterestViewHolder(view);
+            holder.type = VIEW_TYPE_GEO;
+            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.id = (TextView) view.findViewById(R.id.item_interest_id);
+            holder.title = (TextView) view.findViewById(R.id.item_interest_title);
+            holder.longitude = (TextView) view.findViewById(R.id.item_interest_longitude);
+            holder.latitude = (TextView) view.findViewById(R.id.item_interest_latitude);
+        } else
+        if(viewType == VIEW_TYPE_IMAGE){
+            TSApp.logDebug(TAG, "onCreateViewHolder 3");
+            view = mInflater.inflate(R.layout.item_image_interest, parent, false);
+            holder = new InterestViewHolder(view);
+            holder.type = VIEW_TYPE_IMAGE;
+            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.id = (TextView) view.findViewById(R.id.item_interest_id);
+            holder.title = (TextView) view.findViewById(R.id.item_interest_title);
+            holder.img = (TextView) view.findViewById(R.id.item_interest_img);
+        } else
+        if(viewType == VIEW_TYPE_WEB){
+            TSApp.logDebug(TAG, "onCreateViewHolder 4");
+            view = mInflater.inflate(R.layout.item_web_interest, parent, false);
+            holder = new InterestViewHolder(view);
+            holder.type = VIEW_TYPE_WEB;
+            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.id = (TextView) view.findViewById(R.id.item_interest_id);
+            holder.title = (TextView) view.findViewById(R.id.item_interest_title);
+            holder.web = (TextView) view.findViewById(R.id.item_interest_web);
+        }
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(InterestViewHolder holder, int position) {
+        TSApp.logDebug(TAG, "onBindViewHolder");
+        Interest interest = mInterests.get(position);
+
+        holder.id.setText("id="+String.valueOf(interest.getId()));
+        holder.title.setText(interest.getTitle() + " - " + interest.getType());
+        holder.image.setDefaultImageResId(R.drawable.photo);
+        holder.image.setErrorImageResId(R.drawable.photo);
+
+        if(holder.type == VIEW_TYPE_NOTE) {
+            holder.text.setText(interest.getText());
+            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+        } else
+        if(holder.type == VIEW_TYPE_GEO) {
+            holder.longitude.setText(String.valueOf(interest.getLongitude()));
+            holder.latitude.setText(String.valueOf(interest.getLatitude()));
+            holder.image.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
+        } else
+        if(holder.type == VIEW_TYPE_IMAGE) {
+            holder.img.setText(String.valueOf(interest.getImageUrl()));
+            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+        } else
+        if(holder.type == VIEW_TYPE_WEB) {
+            holder.web.setText(String.valueOf(interest.getWebUrl()));
+            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+        }
+
+        holder.image.setOnLongClickListener(mActivity);
     }
 
     @Override
@@ -77,96 +165,7 @@ public class InterestsListAdapter extends BaseAdapter {
             return VIEW_TYPE_NONE;
     }
 
-    @Override
-    public int getViewTypeCount() {
-        return 5;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        TSApp.logDebug(TAG, "getView : position="+position);
-
-        ViewHolder holder = null;
-
-        int type = getItemViewType(position);
-
-        TSApp.logDebug(TAG, "getView : type="+type);
-
-        if (convertView == null) {
-            holder = new ViewHolder();
-            if(type == VIEW_TYPE_NOTE) {
-                TSApp.logDebug(TAG, "getView 1 : convertView=null so create new ViewHolder");
-                convertView = mInflater.inflate(R.layout.item_note_interest, parent, false);
-                holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
-                holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
-                holder.title = (TextView) convertView.findViewById(R.id.item_interest_title);
-                holder.text = (TextView) convertView.findViewById(R.id.item_interest_text);
-            } else
-            if(type == VIEW_TYPE_GEO){
-                TSApp.logDebug(TAG, "getView 2 : convertView=null so create new ViewHolder");
-                convertView = mInflater.inflate(R.layout.item_geo_interest, parent, false);
-                holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
-                holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
-                holder.title = (TextView) convertView.findViewById(R.id.item_interest_title);
-                holder.longitude = (TextView) convertView.findViewById(R.id.item_interest_longitude);
-                holder.latitude = (TextView) convertView.findViewById(R.id.item_interest_latitude);
-            } else
-            if(type == VIEW_TYPE_IMAGE){
-                TSApp.logDebug(TAG, "getView 3 : convertView=null so create new ViewHolder");
-                convertView = mInflater.inflate(R.layout.item_image_interest, parent, false);
-                holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
-                holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
-                holder.title = (TextView) convertView.findViewById(R.id.item_interest_title);
-                holder.img = (TextView) convertView.findViewById(R.id.item_interest_img);
-            } else
-            if(type == VIEW_TYPE_WEB){
-                TSApp.logDebug(TAG, "getView 4 : convertView=null so create new ViewHolder");
-                convertView = mInflater.inflate(R.layout.item_web_interest, parent, false);
-                holder.image = (NetworkImageView) convertView.findViewById(R.id.item_interest_niv);
-                holder.id = (TextView) convertView.findViewById(R.id.item_interest_id);
-                holder.title = (TextView) convertView.findViewById(R.id.item_interest_title);
-                holder.web = (TextView) convertView.findViewById(R.id.item_interest_web);
-            }
-            convertView.setTag(holder);
-        } else {
-            TSApp.logDebug(TAG, "getView 1 : convertView!=null so get tag ViewHolder");
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        Interest interest = mInterests.get(position);
-
-        holder.id.setText("id="+String.valueOf(interest.getId()));
-        holder.title.setText(interest.getTitle() + " - " + interest.getType());
-        holder.image.setDefaultImageResId(R.drawable.photo);
-        holder.image.setErrorImageResId(R.drawable.photo);
-
-        if(type == VIEW_TYPE_NOTE) {
-            holder.type = VIEW_TYPE_NOTE;
-            holder.text.setText(interest.getText());
-            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
-        } else
-        if(type == VIEW_TYPE_GEO) {
-            holder.type = VIEW_TYPE_GEO;
-            holder.longitude.setText(String.valueOf(interest.getLongitude()));
-            holder.latitude.setText(String.valueOf(interest.getLatitude()));
-            holder.image.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
-        } else
-        if(type == VIEW_TYPE_IMAGE) {
-            holder.type = VIEW_TYPE_IMAGE;
-            holder.img.setText(String.valueOf(interest.getImageUrl()));
-            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
-        } else
-        if(type == VIEW_TYPE_WEB) {
-            holder.type = VIEW_TYPE_WEB;
-            holder.web.setText(String.valueOf(interest.getWebUrl()));
-            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
-        }
-
-        return convertView;
-    }
-
-    private class ViewHolder {
+    public class InterestViewHolder extends RecyclerView.ViewHolder {
         public int type;
         public NetworkImageView image;
         public TextView id;
@@ -176,5 +175,13 @@ public class InterestsListAdapter extends BaseAdapter {
         public TextView longitude;
         public TextView latitude;
         public TextView text;
+
+        public InterestViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public interface InterestsRecyclerViewListener extends View.OnLongClickListener {
+        void onLongItemClick(int position);
     }
 }

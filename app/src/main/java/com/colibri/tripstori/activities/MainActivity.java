@@ -5,11 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.colibri.tripstori.factory.PDFFactory;
@@ -25,23 +26,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends TSActivity implements DialogInterface.OnClickListener, AdapterView.OnItemLongClickListener {
+public class MainActivity extends TSActivity implements DialogInterface.OnClickListener, InterestsListAdapter.InterestsRecyclerViewListener {
 
     private static final String TAG = "MainActivity";
-    private ListView mInterestsList;
+    private RecyclerView mInterestsList;
     private InterestsListAdapter mListAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     private Interest mInterest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        mInterestsList = (ListView)findViewById(R.id.interests_lv);
+        mInterestsList = (RecyclerView)findViewById(R.id.interests_lv);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mInterestsList.setLayoutManager(mLayoutManager);
+        mInterestsList.setHasFixedSize(true);
+
         mListAdapter = new InterestsListAdapter(this, getDataManager().getInterests());
         mInterestsList.setAdapter(mListAdapter);
-
-        mInterestsList.setOnItemLongClickListener(this);
 
         TSApp.logInfo(getClass().getName(), "onCreate");
     }
@@ -134,12 +141,12 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         }
     }
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        mInterest = mListAdapter.getItem(position);
-        new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
-        return false;
-    }
+//    @Override
+//    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//        mInterest = mListAdapter.getItem(position);
+//        new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
+//        return false;
+//    }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
@@ -147,5 +154,16 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         Toast.makeText(this, "delete : "+mInterest, Toast.LENGTH_SHORT).show();
         mListAdapter.setInterests(getDataManager().getInterests());
         mListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLongItemClick(int position) {
+        mInterest = mListAdapter.getItem(position);
+        new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        return false;
     }
 }
