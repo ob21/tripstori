@@ -69,12 +69,11 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
 
     @Override
     public InterestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TSApp.logDebug(TAG, "onCreateViewHolder");
         View view;
         InterestViewHolder holder = null;
         // create a new view
         if(viewType == VIEW_TYPE_NOTE) {
-            TSApp.logDebug(TAG, "onCreateViewHolder 1");
+            TSApp.logDebug(TAG, "onCreateViewHolder note");
             view = mInflater.inflate(R.layout.item_note_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_NOTE;
@@ -84,7 +83,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             holder.text = (TextView) view.findViewById(R.id.item_interest_text);
         } else
         if(viewType == VIEW_TYPE_GEO){
-            TSApp.logDebug(TAG, "onCreateViewHolder 2");
+            TSApp.logDebug(TAG, "onCreateViewHolder geo");
             view = mInflater.inflate(R.layout.item_geo_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_GEO;
@@ -95,7 +94,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             holder.latitude = (TextView) view.findViewById(R.id.item_interest_latitude);
         } else
         if(viewType == VIEW_TYPE_IMAGE){
-            TSApp.logDebug(TAG, "onCreateViewHolder 3");
+            TSApp.logDebug(TAG, "onCreateViewHolder image");
             view = mInflater.inflate(R.layout.item_image_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_IMAGE;
@@ -105,7 +104,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             holder.img = (TextView) view.findViewById(R.id.item_interest_img);
         } else
         if(viewType == VIEW_TYPE_WEB){
-            TSApp.logDebug(TAG, "onCreateViewHolder 4");
+            TSApp.logDebug(TAG, "onCreateViewHolder web");
             view = mInflater.inflate(R.layout.item_web_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_WEB;

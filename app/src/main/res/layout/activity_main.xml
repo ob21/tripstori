@@ -7,6 +7,13 @@
     android:fitsSystemWindows="true"
     tools:context="com.colibri.tripstori.activities.MainActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/interests_lv"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>/>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -31,8 +38,6 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

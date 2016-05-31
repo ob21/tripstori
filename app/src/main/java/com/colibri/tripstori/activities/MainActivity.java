@@ -44,8 +44,8 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         mInterestsList = (RecyclerView)findViewById(R.id.interests_lv);
 
         mLayoutManager = new LinearLayoutManager(this);
-        mInterestsList.setLayoutManager(mLayoutManager);
         mInterestsList.setHasFixedSize(true);
+        mInterestsList.setLayoutManager(mLayoutManager);
 
         mListAdapter = new InterestsListAdapter(this, getDataManager().getInterests());
         mInterestsList.setAdapter(mListAdapter);
