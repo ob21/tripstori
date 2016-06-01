@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +34,7 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
     private InterestsListAdapter mListAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Interest mInterestToDelete;
+    private FloatingActionButton mAddButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mAddButton = (FloatingActionButton)findViewById(R.id.fab);
 
         mInterestsList = (RecyclerView)findViewById(R.id.interests_lv);
 
@@ -52,6 +56,13 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         mListAdapter.setOnLongItemClickListener(this);
 
         TSApp.logInfo(getClass().getName(), "onCreate");
+
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "add interest", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
