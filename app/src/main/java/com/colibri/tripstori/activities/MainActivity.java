@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +43,8 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.panoramic_639860_960_720));
 
         mAddButton = (FloatingActionButton)findViewById(R.id.fab);
 
