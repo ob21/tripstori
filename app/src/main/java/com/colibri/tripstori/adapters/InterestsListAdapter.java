@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -38,19 +39,25 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
     private static final int VIEW_TYPE_WEB = 4;
 
     private ArrayList<Interest> mInterests = new ArrayList<>();
-    private MainActivity mActivity;
     private LayoutInflater mInflater;
+    private OnInterestClickListener mClickListener;
+    private OnInterestLongClickListener mLongClickListener;
 
-    public InterestsListAdapter(MainActivity activity, ArrayList<Interest> interests) {
+    public InterestsListAdapter(Context context, ArrayList<Interest> interests, OnInterestClickListener listener) {
         TSApp.logDebug(TAG, "InterestsListAdapter : interests nb = "+interests.size());
-        mActivity = activity;
-        mInflater = LayoutInflater.from(activity);
+        mInflater = LayoutInflater.from(context);
+        mClickListener = listener;
         mInterests = interests;
     }
 
     public void setInterests(ArrayList<Interest> interests) {
         TSApp.logDebug(TAG, "setInterests");
         mInterests = interests;
+    }
+
+    public void setOnLongItemClickListener(OnInterestLongClickListener listener) {
+        TSApp.logDebug(TAG, "setOnItemClickListener : "+listener);
+        mLongClickListener = listener;
     }
 
     public Interest getItem(int i) {
@@ -117,7 +124,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
     }
 
     @Override
-    public void onBindViewHolder(InterestViewHolder holder, int position) {
+    public void onBindViewHolder(InterestViewHolder holder, final int position) {
         TSApp.logDebug(TAG, "onBindViewHolder");
         Interest interest = mInterests.get(position);
 
@@ -129,22 +136,84 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         if(holder.type == VIEW_TYPE_NOTE) {
             holder.text.setText(interest.getText());
             holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+            holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v) {
+                    TSApp.logDebug(TAG, "click on note : "+position);
+                    notifyOnClickListener(v, position);
+                }
+            });
+            holder.setOnItemLongClickListener(new InterestViewHolder.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(View v) {
+                    TSApp.logDebug(TAG, "long click on note : "+position);
+                    notifyOnLongClickListener(v, position);
+                }
+            });
         } else
         if(holder.type == VIEW_TYPE_GEO) {
             holder.longitude.setText(String.valueOf(interest.getLongitude()));
             holder.latitude.setText(String.valueOf(interest.getLatitude()));
             holder.image.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
+            holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v) {
+                    TSApp.logDebug(TAG, "click on geo : "+position);
+                    notifyOnClickListener(v, position);
+                }
+            });
+            holder.setOnItemLongClickListener(new InterestViewHolder.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(View v) {
+                    TSApp.logDebug(TAG, "long click on geo : "+position);
+                    notifyOnLongClickListener(v, position);
+                }
+            });
         } else
         if(holder.type == VIEW_TYPE_IMAGE) {
             holder.img.setText(String.valueOf(interest.getImageUrl()));
             holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+            holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v) {
+                    TSApp.logDebug(TAG, "click on image : "+position);
+                    notifyOnClickListener(v, position);
+                }
+            });
+            holder.setOnItemLongClickListener(new InterestViewHolder.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(View v) {
+                    TSApp.logDebug(TAG, "long click on image : "+position);
+                    notifyOnLongClickListener(v, position);
+                }
+            });
         } else
         if(holder.type == VIEW_TYPE_WEB) {
             holder.web.setText(String.valueOf(interest.getWebUrl()));
             holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+            holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v) {
+                    TSApp.logDebug(TAG, "click on web : "+position);
+                    notifyOnClickListener(v, position);
+                }
+            });
+            holder.setOnItemLongClickListener(new InterestViewHolder.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(View v) {
+                    TSApp.logDebug(TAG, "long click on web : "+position);
+                    notifyOnLongClickListener(v, position);
+                }
+            });
         }
+    }
 
-        holder.image.setOnLongClickListener(mActivity);
+    private void notifyOnClickListener(View v, int p) {
+        mClickListener.onInterestClick(v, getItem(p));
+    }
+
+    private void notifyOnLongClickListener(View v, int p) {
+        mLongClickListener.onInterestLongClick(v, getItem(p));
     }
 
     @Override
@@ -164,7 +233,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             return VIEW_TYPE_NONE;
     }
 
-    public class InterestViewHolder extends RecyclerView.ViewHolder {
+    public static class InterestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public int type;
         public NetworkImageView image;
         public TextView id;
@@ -174,13 +243,52 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         public TextView longitude;
         public TextView latitude;
         public TextView text;
+        private OnItemClickListener mClickListener;
+        private OnItemLongClickListener mLongClickListener;
 
         public InterestViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        public void setOnItemClickListener(OnItemClickListener listener) {
+            mClickListener = listener;
+        }
+
+        public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+            mLongClickListener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(mClickListener != null) {
+                mClickListener.onItemClick(v);
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(mLongClickListener != null) {
+                mLongClickListener.onItemLongClick(v);
+            }
+            return true;
+        }
+
+        public interface OnItemClickListener {
+            void onItemClick(View v);
+        }
+
+        public interface OnItemLongClickListener {
+            void onItemLongClick(View v);
         }
     }
 
-    public interface InterestsRecyclerViewListener extends View.OnLongClickListener {
-        void onLongItemClick(int position);
+    public interface OnInterestClickListener {
+        void onInterestClick(View v, Interest i);
+    }
+
+    public interface OnInterestLongClickListener {
+        void onInterestLongClick(View v, Interest i);
     }
 }

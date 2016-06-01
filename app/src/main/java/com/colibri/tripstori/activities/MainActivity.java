@@ -26,13 +26,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends TSActivity implements DialogInterface.OnClickListener, InterestsListAdapter.InterestsRecyclerViewListener {
+public class MainActivity extends TSActivity implements DialogInterface.OnClickListener, InterestsListAdapter.OnInterestClickListener, InterestsListAdapter.OnInterestLongClickListener {
 
     private static final String TAG = "MainActivity";
     private RecyclerView mInterestsList;
     private InterestsListAdapter mListAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Interest mInterest;
+    private Interest mInterestToDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,9 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         mInterestsList.setHasFixedSize(true);
         mInterestsList.setLayoutManager(mLayoutManager);
 
-        mListAdapter = new InterestsListAdapter(this, getDataManager().getInterests());
+        mListAdapter = new InterestsListAdapter(this, getDataManager().getInterests(), this);
         mInterestsList.setAdapter(mListAdapter);
+        mListAdapter.setOnLongItemClickListener(this);
 
         TSApp.logInfo(getClass().getName(), "onCreate");
     }
@@ -57,6 +58,7 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
     protected void onResume() {
         super.onResume();
         mListAdapter.notifyDataSetChanged();
+        TSApp.logDebug(TAG, "onResume this="+this);
     }
 
 
@@ -141,29 +143,34 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         }
     }
 
-//    @Override
-//    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//        mInterest = mListAdapter.getItem(position);
-//        new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
-//        return false;
-//    }
-
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        DataManager.getInstance().deleteInterest(mInterest);
-        Toast.makeText(this, "delete : "+mInterest, Toast.LENGTH_SHORT).show();
+        DataManager.getInstance().deleteInterest(mInterestToDelete);
+        Toast.makeText(this, "delete : "+mInterestToDelete, Toast.LENGTH_SHORT).show();
         mListAdapter.setInterests(getDataManager().getInterests());
         mListAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onLongItemClick(int position) {
-        mInterest = mListAdapter.getItem(position);
-        new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
+    public void onInterestClick(final View v, final Interest i) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "onInterestClick "+i.getId(), Toast.LENGTH_LONG).show();
+                TSApp.logDebug(TAG, "# onInterestClick "+i.getId());
+            }
+        });
     }
 
     @Override
-    public boolean onLongClick(View v) {
-        return false;
+    public void onInterestLongClick(final View v, final Interest i) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TSApp.logDebug(TAG, "# onInterestLongClick "+i.getId());
+                mInterestToDelete = i;
+                new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
+            }
+        });
     }
 }
