@@ -10,10 +10,10 @@ import java.util.Date;
 public class Interest {
 
     public final static int NONE = 0;
-    public final static int NOTE = 0;
-    public final static int GEO = 0;
-    public final static int IMAGE = 0;
-    public final static int WEB = 0;
+    public final static int NOTE = 1;
+    public final static int GEO = 2;
+    public final static int IMAGE = 3;
+    public final static int WEB = 4;
 
     private long mId;
 

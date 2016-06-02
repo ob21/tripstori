@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.model.Interest;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class InterestsDataSource {
     }
 
     public Interest createGeoInterest(String title, int type, double longitude, double latitude) {
+        TSApp.logDebug(TAG, "createGeoInterest type = "+Interest.typeFromInt(type));
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
@@ -82,6 +84,7 @@ public class InterestsDataSource {
     }
 
     public Interest createNoteInterest(String title, int type, String text) {
+        TSApp.logDebug(TAG, "createNoteInterest type = "+Interest.typeFromInt(type));
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
@@ -102,6 +105,7 @@ public class InterestsDataSource {
     }
 
     public Interest createImageInterest(String title, int type, String imgUrl, String text) {
+        TSApp.logDebug(TAG, "createImageInterest type = "+Interest.typeFromInt(type));
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
@@ -122,6 +126,7 @@ public class InterestsDataSource {
     }
 
     public Interest createWebInterest(String title, int type, String webUrl, String text) {
+        TSApp.logDebug(TAG, "createWebInterest type = "+Interest.typeFromInt(type));
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
@@ -143,13 +148,13 @@ public class InterestsDataSource {
 
     public void deleteInterest(Interest interest) {
         long id = interest.getId();
-        System.out.println("Interest deleted with id: " + id);
+        TSApp.logDebug(TAG, "Interest deleted with id: " + id);
         database.delete(TSDbHelper.TABLE_INTERESTS, TSDbHelper.COLUMN_ID
                 + " = " + id, null);
     }
 
     public void deleteAllInterests() {
-        System.out.println("All interests deleted");
+        TSApp.logDebug(TAG, "All interests deleted");
         database.delete(TSDbHelper.TABLE_INTERESTS, null, null);
     }
 
@@ -171,7 +176,8 @@ public class InterestsDataSource {
     }
 
     private Interest cursorToInterest(Cursor cursor) {
-        Log.i(TAG, "cursor count = "+cursor.getColumnCount());
+        TSApp.logDebug(TAG, "cursor count = "+cursor.getColumnCount());
+        TSApp.logDebug(TAG, "cursor getString(2) = "+cursor.getString(2));
         Interest interest = new Interest(cursor.getLong(0),
                 cursor.getString(1),
                 Interest.intFromType(cursor.getString(2)),

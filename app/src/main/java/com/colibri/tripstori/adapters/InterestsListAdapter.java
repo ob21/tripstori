@@ -133,6 +133,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         holder.image.setDefaultImageResId(R.drawable.photo);
         holder.image.setErrorImageResId(R.drawable.photo);
 
+        TSApp.logDebug(TAG, "interest = "+interest);
+
         if(holder.type == VIEW_TYPE_NOTE) {
             holder.text.setText(interest.getText());
             holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
