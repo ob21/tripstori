@@ -21,11 +21,6 @@ public class TSActivity  extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        int heapSize = am.getMemoryClass();
-        VolleyManager.init(this, (heapSize * 1024 * 1024 / 8));
-        TSApp.logDebug(TAG, "init Volley");
     }
 
     protected DataManager getDataManager(){

@@ -1,12 +1,12 @@
 package com.colibri.tripstori.activities;
 
+import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +22,7 @@ import com.colibri.tripstori.adapters.InterestsListAdapter;
 import com.colibri.tripstori.fragment.ConfirmDialogFragment;
 import com.colibri.tripstori.manager.DataManager;
 import com.colibri.tripstori.model.Interest;
+import com.colibri.tripstori.utils.VolleyManager;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -64,6 +65,7 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "add interest", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, AddInterestActivity.class));
             }
         });
     }
@@ -170,7 +172,6 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MainActivity.this, "onInterestClick "+i.getId(), Toast.LENGTH_LONG).show();
                 TSApp.logDebug(TAG, "# onInterestClick "+i.getId());
             }
         });

@@ -22,6 +22,11 @@ public class TSApp extends Application {
         super.onCreate();
         logDebug(TAG, "onCreate");
         DataManager.getInstance().init(getApplicationContext());
+
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        int heapSize = am.getMemoryClass();
+        VolleyManager.init(this, (heapSize * 1024 * 1024 / 8));
+        TSApp.logDebug(TAG, "init Volley");
     }
 
 
