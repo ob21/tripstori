@@ -11,7 +11,7 @@ public class GeoInterest extends Interest {
 
     private double mLatitude;
 
-    public GeoInterest(long id, String title, Type type, double longitude, double latitude) {
+    public GeoInterest(long id, String title, int type, double longitude, double latitude) {
         super(id, title, type, longitude, latitude);
         setLongitude(longitude);
         setLatitude(latitude);

@@ -9,26 +9,15 @@ import java.util.Date;
  */
 public class Interest {
 
-    public enum Type {
-        NONE(0),
-        NOTE(1),
-        GEO(2),
-        IMAGE(3),
-        WEB(4);
-
-        private final int mValue;
-        private Type(int value) {
-            this.mValue = value;
-        }
-
-        public int getValue() {
-            return mValue;
-        }
-    }
+    public final static int NONE = 0;
+    public final static int NOTE = 0;
+    public final static int GEO = 0;
+    public final static int IMAGE = 0;
+    public final static int WEB = 0;
 
     private long mId;
 
-    private Type mtype;
+    private int mType;
 
     private String mTitle;
 
@@ -45,7 +34,7 @@ public class Interest {
     private Date mDate;
 
 
-    public Interest(long id, String title, Type type, String text, Date date) {
+    public Interest(long id, String title, int type, String text, Date date) {
         setId(id);
         setTitle(title);
         setType(type);
@@ -57,7 +46,7 @@ public class Interest {
         setDate(date);
     }
 
-    public Interest(long id, String title, Type type, double longitude, double latitude) {
+    public Interest(long id, String title, int type, double longitude, double latitude) {
         setId(id);
         setTitle(title);
         setType(type);
@@ -68,7 +57,7 @@ public class Interest {
         setText(null);
     }
 
-    public Interest(long id, String title, Type type, String imgUrl, String text) {
+    public Interest(long id, String title, int type, String imgUrl, String text) {
         setId(id);
         setTitle(title);
         setType(type);
@@ -78,7 +67,7 @@ public class Interest {
         setText(text);
     }
 
-    public Interest(long id, String title, Type type, String webUrl) {
+    public Interest(long id, String title, int type, String webUrl) {
         setId(id);
         setTitle(title);
         setType(type);
@@ -89,7 +78,7 @@ public class Interest {
         setText(null);
     }
 
-    public Interest(long id, String title, Type type, String imgUrl, String webURl, double longitude, double latitude, String text) {
+    public Interest(long id, String title, int type, String imgUrl, String webURl, double longitude, double latitude, String text) {
         setId(id);
         setTitle(title);
         setType(type);
@@ -116,12 +105,12 @@ public class Interest {
         this.mTitle = title;
     }
 
-    public Type getType() {
-        return mtype;
+    public int getType() {
+        return mType;
     }
 
-    public void setType(Type type) {
-        this.mtype = type;
+    public void setType(int type) {
+        this.mType = type;
     }
 
     public String getImageUrl() {
@@ -172,20 +161,36 @@ public class Interest {
         this.mDate = date;
     }
 
-    public static Type typeFromInt(int anInt) {
+    public static String typeFromInt(int anInt) {
         if(anInt==1) {
-            return Type.NOTE;
+            return "NOTE";
         } else
         if(anInt==2) {
-            return Type.GEO;
+            return "GEO";
         } else
         if(anInt==3) {
-            return Type.IMAGE;
+            return "IMAGE";
         } else
         if(anInt==4) {
-            return Type.WEB;
+            return "WEB";
         } else
-            return Type.NONE;
+            return "NONE";
+    }
+
+    public static int intFromType(String type) {
+        if(type.equals("NOTE")) {
+            return 1;
+        } else
+        if(type.equals("GEO")) {
+            return 2;
+        } else
+        if(type.equals("IMAGE")) {
+            return 3;
+        } else
+        if(type.equals("WEB")) {
+            return 4;
+        } else
+            return 0;
     }
 
     @Override
@@ -198,7 +203,7 @@ public class Interest {
         if (mId != interest.mId) return false;
         if (Double.compare(interest.mLongitude, mLongitude) != 0) return false;
         if (Double.compare(interest.mLatitude, mLatitude) != 0) return false;
-        if (mtype != interest.mtype) return false;
+        if (mType != interest.mType) return false;
         if (mTitle != null ? !mTitle.equals(interest.mTitle) : interest.mTitle != null)
             return false;
         if (mImageUrl != null ? !mImageUrl.equals(interest.mImageUrl) : interest.mImageUrl != null)
@@ -214,7 +219,7 @@ public class Interest {
     public String toString() {
         return "Interest{" +
                 "mId=" + mId +
-                ", mtype=" + mtype +
+                ", mType=" + mType +
                 ", mTitle='" + mTitle + '\'' +
                 ", mImageUrl='" + mImageUrl + '\'' +
                 ", mWebUrl='" + mWebUrl + '\'' +

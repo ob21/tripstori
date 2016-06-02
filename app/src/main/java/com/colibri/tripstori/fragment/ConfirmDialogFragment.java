@@ -9,10 +9,11 @@ import android.support.v4.app.DialogFragment;
 /**
  * Created by OPOB7414 on 27/05/2016.
  */
-public class ConfirmDialogFragment extends DialogFragment {
+public class ConfirmDialogFragment extends TSDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        setType(TSDialogFragment.CONFIRM);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle("Effacer cet intérêt");
         alertDialogBuilder.setMessage("Êtes-vous sûr ?");

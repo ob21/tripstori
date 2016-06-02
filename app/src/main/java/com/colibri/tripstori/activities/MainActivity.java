@@ -1,6 +1,6 @@
 package com.colibri.tripstori.activities;
 
-import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,13 +19,15 @@ import com.colibri.tripstori.factory.PDFFactory;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.adapters.InterestsListAdapter;
+import com.colibri.tripstori.fragment.ChoiceDialogFragment;
 import com.colibri.tripstori.fragment.ConfirmDialogFragment;
+import com.colibri.tripstori.fragment.TSDialogFragment;
 import com.colibri.tripstori.manager.DataManager;
 import com.colibri.tripstori.model.Interest;
-import com.colibri.tripstori.utils.VolleyManager;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -37,6 +39,7 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
     private RecyclerView.LayoutManager mLayoutManager;
     private Interest mInterestToDelete;
     private FloatingActionButton mAddButton;
+    private TSDialogFragment mCurrentDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,6 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-//        getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.panoramic_639860_960_720));
 
         mAddButton = (FloatingActionButton)findViewById(R.id.fab);
 
@@ -64,8 +65,17 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "add interest", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(MainActivity.this, AddInterestActivity.class));
+                ArrayList<String> choices = new ArrayList<String>();
+                choices.add("note");
+                choices.add("geo");
+                choices.add("image");
+                choices.add("web");
+                mCurrentDialog = new ChoiceDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(ChoiceDialogFragment.DATA, choices);
+                bundle.putInt(ChoiceDialogFragment.SELECTED, 0);
+                mCurrentDialog.setArguments(bundle);
+                mCurrentDialog.show(getSupportFragmentManager(), "ChoiceDialog");
             }
         });
     }
@@ -97,25 +107,25 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_note) {
-            getDataManager().createNoteInterest("title note "+currentDateandTime, Interest.Type.NOTE, "text description "+currentDateandTime);
+            getDataManager().createNoteInterest("title note "+currentDateandTime, Interest.NOTE, "text description "+currentDateandTime);
             mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_geo) {
-            getDataManager().createGeoInterest("title geo "+currentDateandTime, Interest.Type.GEO, 24.345, 47.456);
+            getDataManager().createGeoInterest("title geo "+currentDateandTime, Interest.GEO, 24.345, 47.456);
             mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_img) {
-            getDataManager().createImageInterest("title img " + currentDateandTime, Interest.Type.IMAGE, InterestsListAdapter.IMAGE_URL, "image comment");
+            getDataManager().createImageInterest("title img " + currentDateandTime, Interest.IMAGE, InterestsListAdapter.IMAGE_URL, "image comment");
             mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
         }
         if (id == R.id.action_add_web) {
-            getDataManager().createWebInterest("title web " + currentDateandTime, Interest.Type.WEB, "http://google.fr", "web comment");
+            getDataManager().createWebInterest("title web " + currentDateandTime, Interest.WEB, "http://google.fr", "web comment");
             mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;
@@ -161,10 +171,26 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        DataManager.getInstance().deleteInterest(mInterestToDelete);
-        Toast.makeText(this, "delete : "+mInterestToDelete, Toast.LENGTH_SHORT).show();
-        mListAdapter.setInterests(getDataManager().getInterests());
-        mListAdapter.notifyDataSetChanged();
+        switch(mCurrentDialog.getType()) {
+            case TSDialogFragment.CONFIRM :
+                if(mInterestToDelete != null) {
+                    DataManager.getInstance().deleteInterest(mInterestToDelete);
+                    Toast.makeText(this, "delete : "+mInterestToDelete, Toast.LENGTH_SHORT).show();
+                    mListAdapter.setInterests(getDataManager().getInterests());
+                    mListAdapter.notifyDataSetChanged();
+                    mInterestToDelete = null;
+                }
+                break;
+            case TSDialogFragment.CHOICE:
+                TSApp.logDebug(TAG, "onclick dialog choice which = "+which);
+                Intent intent = new Intent(MainActivity.this, AddInterestActivity.class);
+                intent.putExtra(AddInterestActivity.CHOICE, which);
+                startActivity(intent);
+                dialog.dismiss();
+                break;
+        }
+        mCurrentDialog = null;
+
     }
 
     @Override
@@ -184,7 +210,8 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
             public void run() {
                 TSApp.logDebug(TAG, "# onInterestLongClick "+i.getId());
                 mInterestToDelete = i;
-                new ConfirmDialogFragment().show(getSupportFragmentManager(), "DeleteDialog");
+                mCurrentDialog = new ConfirmDialogFragment();
+                mCurrentDialog.show(getSupportFragmentManager(), "DeleteDialog");
             }
         });
     }

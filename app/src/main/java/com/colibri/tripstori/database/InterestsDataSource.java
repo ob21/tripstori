@@ -41,10 +41,10 @@ public class InterestsDataSource {
         dbHelper.close();
     }
 
-    public Interest createGeoInterest(String title, Interest.Type type, double longitude, double latitude) {
+    public Interest createGeoInterest(String title, int type, double longitude, double latitude) {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
-        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, longitude);
@@ -61,10 +61,10 @@ public class InterestsDataSource {
         return newInterest;
     }
 
-    public Interest updateGeoInterest(String title, Interest.Type type, double longitude, double latitude) {
+    public Interest updateGeoInterest(String title, int type, double longitude, double latitude) {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
-        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, longitude);
@@ -81,10 +81,10 @@ public class InterestsDataSource {
         return updatedInterest;
     }
 
-    public Interest createNoteInterest(String title, Interest.Type type, String text) {
+    public Interest createNoteInterest(String title, int type, String text) {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
-        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
@@ -101,10 +101,10 @@ public class InterestsDataSource {
         return newInterest;
     }
 
-    public Interest createImageInterest(String title, Interest.Type type, String imgUrl, String text) {
+    public Interest createImageInterest(String title, int type, String imgUrl, String text) {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
-        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, imgUrl);
         values.put(TSDbHelper.COLUMN_WEBURL, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
@@ -121,10 +121,10 @@ public class InterestsDataSource {
         return newInterest;
     }
 
-    public Interest createWebInterest(String title, Interest.Type type, String webUrl, String text) {
+    public Interest createWebInterest(String title, int type, String webUrl, String text) {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
-        values.put(TSDbHelper.COLUMN_TYPE, type.getValue());
+        values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, webUrl);
         values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
@@ -174,7 +174,7 @@ public class InterestsDataSource {
         Log.i(TAG, "cursor count = "+cursor.getColumnCount());
         Interest interest = new Interest(cursor.getLong(0),
                 cursor.getString(1),
-                Interest.typeFromInt(cursor.getInt(2)),
+                Interest.intFromType(cursor.getString(2)),
                 cursor.getString(3),
                 cursor.getString(4),
                 cursor.getDouble(5),

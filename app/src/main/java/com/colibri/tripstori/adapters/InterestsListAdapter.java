@@ -218,16 +218,16 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
 
     @Override
     public int getItemViewType(int position) {
-        if (mInterests.get(position).getType() == Interest.Type.NOTE) {
+        if (mInterests.get(position).getType() == Interest.NOTE) {
             return VIEW_TYPE_NOTE;
         } else
-        if (mInterests.get(position).getType() == Interest.Type.GEO){
+        if (mInterests.get(position).getType() == Interest.GEO){
             return VIEW_TYPE_GEO;
         } else
-        if (mInterests.get(position).getType() == Interest.Type.IMAGE){
+        if (mInterests.get(position).getType() == Interest.IMAGE){
             return VIEW_TYPE_IMAGE;
         } else
-        if (mInterests.get(position).getType() == Interest.Type.WEB){
+        if (mInterests.get(position).getType() == Interest.WEB){
             return VIEW_TYPE_WEB;
         } else
             return VIEW_TYPE_NONE;

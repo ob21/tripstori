@@ -46,22 +46,22 @@ public class DataManager {
         return mDataSource.getAllInterests();
     }
 
-    public void createGeoInterest(String title, Interest.Type type, double longitude, double latitude) {
+    public void createGeoInterest(String title, int type, double longitude, double latitude) {
         TSApp.logDebug(TAG, "createGeoInterest");
         mDataSource.createGeoInterest(title, type, longitude, latitude);
     }
 
-    public void createNoteInterest(String title, Interest.Type type, String text) {
+    public void createNoteInterest(String title, int type, String text) {
         TSApp.logDebug(TAG, "createNoteInterest");
         mDataSource.createNoteInterest(title, type, text);
     }
 
-    public void createWebInterest(String title, Interest.Type type, String webUrl, String text) {
+    public void createWebInterest(String title, int type, String webUrl, String text) {
         TSApp.logDebug(TAG, "createWebInterest");
         mDataSource.createWebInterest(title, type, webUrl, text);
     }
 
-    public void createImageInterest(String title, Interest.Type type, String imgUrl, String text) {
+    public void createImageInterest(String title, int type, String imgUrl, String text) {
         TSApp.logDebug(TAG, "createImageInterest");
         mDataSource.createImageInterest(title, type, imgUrl, text);
     }

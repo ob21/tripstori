@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">tripstori</string>
 
+    <string name="note">note</string>
+    <string name="geo">geo</string>
+    <string name="image">image</string>
+    <string name="web">web</string>
+
     <string name="hello_main">Hello main !</string>
     <string name="hello_about">Hello about !</string>
     <string name="action_add_note">Add note</string>
