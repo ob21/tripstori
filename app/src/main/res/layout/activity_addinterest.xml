@@ -108,4 +108,9 @@
         android:textAppearance="@style/TextH1"
         android:textColor="@color/colorAccent"/>
 
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
 </LinearLayout>

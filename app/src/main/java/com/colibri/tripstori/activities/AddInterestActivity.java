@@ -3,11 +3,17 @@ package com.colibri.tripstori.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,6 +36,8 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     public final static String CHOICE = "choice";
     private static final String TAG = "AddInterestActivity";
     private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
+    private static final int REQUEST_IMAGE_PICK = 3;
 
     private int mChoice;
     private TextView mEditDate;
@@ -42,6 +50,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     private TextView mLocation;
     private TextView mImageUrl;
     private TextView mWebUrl;
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +72,8 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         mImageUrl.setVisibility(View.GONE);
         mWebUrl = (TextView) findViewById(R.id.textview_web_url);
         mWebUrl.setVisibility(View.GONE);
+
+        mImageView = (ImageView)findViewById(R.id.imageview);
 
         switch (mChoice) {
             case 0:
@@ -177,11 +188,17 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         }
 
         if (v == mImageUrl) {
-
+            TSApp.logDebug(TAG, "mImageUrl");
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
         }
 
         if (v == mWebUrl) {
-
+            Intent i = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, REQUEST_IMAGE_PICK);
         }
 
 
@@ -196,6 +213,28 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                 mLocation.setText(place.getName() + " " + place.getLatLng());
             }
         }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mImageView.setImageBitmap(imageBitmap);
+        }
+        if(requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
+            TSApp.logDebug(TAG, "got REQUEST_IMAGE_PICK result");
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+            mImageView.setImageBitmap(bitmap);
+        }
+
     }
 
 }
