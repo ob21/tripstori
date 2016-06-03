@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 
     <application
         android:name=".TSApp"
@@ -28,6 +29,8 @@
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDUtowTL0iq8Y85jJtC_5cK24GTSs4ZRTc"/>
     </application>
 
 </manifest>

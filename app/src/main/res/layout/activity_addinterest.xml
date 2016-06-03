@@ -10,41 +10,6 @@
         android:theme="@style/ToolbarTheme">
     </android.support.v7.widget.Toolbar>
 
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/radio"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:orientation="vertical">
-        <RadioButton android:id="@+id/radio_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/note"
-            android:textSize="18sp"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/radio_geo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/geo"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/radio_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/image"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/radio_web"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/web"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:onClick="onRadioButtonClicked"/>
-    </RadioGroup>
-
     <EditText
         android:id="@+id/edittext_title"
         android:layout_width="fill_parent"
@@ -93,7 +58,9 @@
             android:layout_marginTop="30dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:hint="@string/input_date_default"/>
+            android:text="@string/input_date_default"
+            android:textAppearance="@style/TextH1"
+            android:textColor="@color/colorAccent"/>
 
         <TextView
             android:id="@+id/textview_time"
@@ -102,9 +69,43 @@
             android:layout_marginTop="30dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:hint="@string/input_time_default"/>
+            android:text="@string/input_time_default"
+            android:textAppearance="@style/TextH1"
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textview_location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/input_location_default"
+        android:textAppearance="@style/TextH1"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/textview_image_url"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/input_image_url_default"
+        android:textAppearance="@style/TextH1"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/textview_web_url"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/input_web_url_default"
+        android:textAppearance="@style/TextH1"
+        android:textColor="@color/colorAccent"/>
 
 </LinearLayout>

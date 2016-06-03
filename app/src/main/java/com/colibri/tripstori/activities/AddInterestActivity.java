@@ -2,20 +2,23 @@ package com.colibri.tripstori.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
 import com.colibri.tripstori.model.Interest;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.Calendar;
 
@@ -26,6 +29,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
     public final static String CHOICE = "choice";
     private static final String TAG = "AddInterestActivity";
+    private static final int PLACE_PICKER_REQUEST = 1;
 
     private int mChoice;
     private TextView mEditDate;
@@ -35,6 +39,9 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     private int mDay;
     private int mHour;
     private int mMinute;
+    private TextView mLocation;
+    private TextView mImageUrl;
+    private TextView mWebUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,24 +55,33 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mChoice = getIntent().getIntExtra(CHOICE, 0);
-        TSApp.logDebug(TAG, "mChoice = "+mChoice);
+        TSApp.logDebug(TAG, "mChoice = " + mChoice);
 
-        RadioGroup rg = (RadioGroup)findViewById(R.id.radio);
-        switch(mChoice) {
+        mLocation = (TextView) findViewById(R.id.textview_location);
+        mLocation.setVisibility(View.GONE);
+        mImageUrl = (TextView) findViewById(R.id.textview_image_url);
+        mImageUrl.setVisibility(View.GONE);
+        mWebUrl = (TextView) findViewById(R.id.textview_web_url);
+        mWebUrl.setVisibility(View.GONE);
+
+        switch (mChoice) {
             case 0:
-                rg.check(R.id.radio_note);
+                getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.NOTE).toLowerCase()));
                 break;
             case 1:
-                rg.check(R.id.radio_geo);
+                getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.GEO).toLowerCase()));
+                mLocation.setVisibility(View.VISIBLE);
                 break;
             case 2:
-                rg.check(R.id.radio_image);
+                getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.IMAGE).toLowerCase()));
+                mImageUrl.setVisibility(View.VISIBLE);
                 break;
             case 3:
-                rg.check(R.id.radio_web);
+                getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.WEB).toLowerCase()));
+                mWebUrl.setVisibility(View.VISIBLE);
                 break;
             default:
-                rg.check(R.id.radio_note);
+                getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.NOTE).toLowerCase()));
                 break;
         }
 
@@ -73,6 +89,10 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         mEditDate.setOnClickListener(this);
         mEditTime = (TextView) findViewById(R.id.textview_time);
         mEditTime.setOnClickListener(this);
+
+        mLocation.setOnClickListener(this);
+        mImageUrl.setOnClickListener(this);
+        mWebUrl.setOnClickListener(this);
 
         // Get Current Date
         final Calendar c = Calendar.getInstance();
@@ -95,27 +115,6 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                 onBackPressed();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_note:
-                if (checked)
-                    break;
-            case R.id.radio_geo:
-                if (checked)
-                    break;
-            case R.id.radio_image:
-                if (checked)
-                    break;
-            case R.id.radio_web:
-                if (checked)
-                    break;
-        }
     }
 
     @Override
@@ -166,6 +165,37 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
             timePickerDialog.show();
         }
 
+        if (v == mLocation) {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            try {
+                startActivityForResult(builder.build(AddInterestActivity.this), PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException e) {
+                TSApp.logError(TAG, ""+e);
+            } catch (GooglePlayServicesNotAvailableException e) {
+                TSApp.logError(TAG, ""+e);
+            }
+        }
+
+        if (v == mImageUrl) {
+
+        }
+
+        if (v == mWebUrl) {
+
+        }
+
 
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                mLocation.setText(place.getName());
+            }
+        }
+    }
+
 }

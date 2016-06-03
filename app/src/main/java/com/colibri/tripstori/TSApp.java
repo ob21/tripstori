@@ -2,6 +2,8 @@ package com.colibri.tripstori;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.content.Context;
+//import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.colibri.tripstori.manager.DataManager;
@@ -16,6 +18,12 @@ public class TSApp extends Application {
     private static final String APP = "#ts";
 
     private static boolean mDebug = true;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+//        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {

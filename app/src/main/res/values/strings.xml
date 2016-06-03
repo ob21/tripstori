@@ -18,13 +18,20 @@
     <string name="action_about">About</string>
 
     <string name="add_activity_title">add an interest</string>
+    <string name="add_activity_title_with_type">add a %1s interest</string>
     <string name="input_title_default">titre</string>
     <string name="input_title"></string>
     <string name="input_text_default">description</string>
     <string name="input_text"></string>
     <string name="input_date_default">date</string>
     <string name="input_date"></string>
-    <string name="input_time_default">time</string>
+    <string name="input_time_default">heure</string>
     <string name="input_time"></string>
+    <string name="input_location_default">coordonnées gps</string>
+    <string name="input_location"></string>
+    <string name="input_image_url_default">image url</string>
+    <string name="input_image_url"></string>
+    <string name="input_web_url_default">web url</string>
+    <string name="input_web_url"></string>
 
 </resources>
