@@ -193,7 +193,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                 Place place = PlacePicker.getPlace(this, data);
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                mLocation.setText(place.getName());
+                mLocation.setText(place.getName() + " " + place.getLatLng());
             }
         }
     }
