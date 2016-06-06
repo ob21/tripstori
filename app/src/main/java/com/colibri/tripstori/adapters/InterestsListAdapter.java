@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -30,7 +31,11 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
     public static final String IMAGE_URL =
             "https://developer.android.com/images/training/system-ui.png";
 
-    public static final String MAPS_URL = "https://maps.googleapis.com/maps/api/staticmap?center=40.714728,-73.998672&zoom=12&size=400x400";
+    public static final String RANDO1_URL = "https://fr.wikipedia.org/wiki/Randonn%C3%A9e_p%C3%A9destre#/media/File:Randonneurs_Glacier_Tour.jpg";
+
+    public static final String RANDO2_URL = "https://fr.wikipedia.org/wiki/Randonn%C3%A9e_p%C3%A9destre#/media/File:Tour_to_the_Quebrada_de_las_Conchas.jpg";
+
+    public static final String MAPS_URL = "https://maps.googleapis.com/maps/api/staticmap?center=40.714728,-73.998672&zoom=12&size=600x400";
 
     private static final int VIEW_TYPE_NONE = 0;
     private static final int VIEW_TYPE_NOTE = 1;
@@ -84,7 +89,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             view = mInflater.inflate(R.layout.item_note_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_NOTE;
-            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
+            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.text = (TextView) view.findViewById(R.id.item_interest_text);
@@ -94,7 +100,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             view = mInflater.inflate(R.layout.item_geo_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_GEO;
-            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
+            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.longitude = (TextView) view.findViewById(R.id.item_interest_longitude);
@@ -105,7 +112,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             view = mInflater.inflate(R.layout.item_image_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_IMAGE;
-            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
+            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.img = (TextView) view.findViewById(R.id.item_interest_img);
@@ -115,7 +123,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             view = mInflater.inflate(R.layout.item_web_interest, parent, false);
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_WEB;
-            holder.image = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+            holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
+            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.web = (TextView) view.findViewById(R.id.item_interest_web);
@@ -130,14 +139,16 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
 
         holder.id.setText("id="+String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
-        holder.image.setDefaultImageResId(R.drawable.photo);
-        holder.image.setErrorImageResId(R.drawable.photo);
+        holder.netimage.setDefaultImageResId(R.drawable.photo);
+        holder.netimage.setErrorImageResId(R.drawable.photo);
 
         TSApp.logDebug(TAG, "interest = "+interest);
 
         if(holder.type == VIEW_TYPE_NOTE) {
             holder.text.setText(interest.getText());
-            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+            holder.netimage.setImageUrl(RANDO1_URL, VolleyManager.getImageLoader());
+            holder.image.setImageResource(R.drawable.rando1);
+            TSApp.logDebug(TAG, "set note item with image : "+RANDO1_URL);
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v) {
@@ -156,7 +167,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         if(holder.type == VIEW_TYPE_GEO) {
             holder.longitude.setText(String.valueOf(interest.getLongitude()));
             holder.latitude.setText(String.valueOf(interest.getLatitude()));
-            holder.image.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
+            holder.netimage.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v) {
@@ -174,7 +185,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         } else
         if(holder.type == VIEW_TYPE_IMAGE) {
             holder.img.setText(String.valueOf(interest.getImageUrl()));
-            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+            holder.netimage.setImageUrl(RANDO2_URL, VolleyManager.getImageLoader());
+            holder.image.setImageResource(R.drawable.rando2);
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v) {
@@ -192,7 +204,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         } else
         if(holder.type == VIEW_TYPE_WEB) {
             holder.web.setText(String.valueOf(interest.getWebUrl()));
-            holder.image.setImageUrl(IMAGE_URL, VolleyManager.getImageLoader());
+            holder.netimage.setImageUrl(RANDO1_URL, VolleyManager.getImageLoader());
+//            holder.image.setImageResource(R.drawable.rando1);
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v) {
@@ -237,7 +250,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
 
     public static class InterestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public int type;
-        public NetworkImageView image;
+        public NetworkImageView netimage;
+        public ImageView image;
         public TextView id;
         public TextView title;
         public TextView img;

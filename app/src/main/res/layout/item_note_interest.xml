@@ -5,40 +5,55 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/item_list_margin"
-        android:padding="@dimen/item_list_padding"
-        android:background="@color/colorBackground">
+        android:layout_height="230dp"
+        android:layout_margin="@dimen/item_list_margin">
 
         <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/item_interest_niv"
-            android:layout_width="150dp"
-            android:layout_height="170dp"
-            android:layout_centerHorizontal="true" />
+        android:id="@+id/item_interest_niv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"/>
 
-        <TextView
-            android:id="@+id/item_interest_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_interest_niv"
-            style="@style/TextH1Bold"
-            android:text="New Text"/>
+        <ImageView
+            android:id="@+id/item_interest_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"/>
 
-        <TextView
-            android:id="@+id/item_interest_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item_interest_id"
-            style="@style/TextDefault"
-            android:text="New Text"/>
+            android:background="#99333333"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:padding="@dimen/item_list_padding">
 
-        <TextView
-            android:id="@+id/item_interest_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_interest_title"
-            style="@style/TextDefault"
-            android:text="New Text"/>
+            <TextView
+                android:id="@+id/item_interest_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextH1Bold"
+                android:text="New Text"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/item_interest_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextDefault"
+                android:text="New Text"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/item_interest_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextDefault"
+                android:text="New Text"
+                android:textColor="#FFFFFF"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

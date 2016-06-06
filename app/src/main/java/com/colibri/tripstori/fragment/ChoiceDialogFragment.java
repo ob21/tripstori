@@ -26,8 +26,8 @@ public class ChoiceDialogFragment extends TSDialogFragment {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
 
-        dialog.setTitle("Please Select");
-        dialog.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+        dialog.setTitle("Choisissez ce que vous voulez notez");
+        dialog.setPositiveButton("Annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();
@@ -38,7 +38,7 @@ public class ChoiceDialogFragment extends TSDialogFragment {
         int position = bundle.getInt(SELECTED);
 
         CharSequence[] cs = list.toArray(new CharSequence[list.size()]);
-        dialog.setSingleChoiceItems(cs, position, (DialogInterface.OnClickListener) getActivity());
+        dialog.setItems(cs, (DialogInterface.OnClickListener) getActivity());
 
         return dialog.create();
     }

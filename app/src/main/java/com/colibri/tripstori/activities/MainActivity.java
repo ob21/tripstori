@@ -66,10 +66,10 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
             @Override
             public void onClick(View v) {
                 ArrayList<String> choices = new ArrayList<String>();
-                choices.add("note");
-                choices.add("geo");
-                choices.add("image");
-                choices.add("web");
+                choices.add("Note");
+                choices.add("Lieu");
+                choices.add("Image");
+                choices.add("Page web");
                 mCurrentDialog = new ChoiceDialogFragment();
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList(ChoiceDialogFragment.DATA, choices);

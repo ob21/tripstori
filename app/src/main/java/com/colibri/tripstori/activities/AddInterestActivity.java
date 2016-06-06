@@ -189,16 +189,18 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
         if (v == mImageUrl) {
             TSApp.logDebug(TAG, "mImageUrl");
+
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
+//            Intent i = new Intent(Intent.ACTION_PICK,
+//                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            startActivityForResult(i, REQUEST_IMAGE_PICK);
         }
 
         if (v == mWebUrl) {
-            Intent i = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, REQUEST_IMAGE_PICK);
+            TSApp.logDebug(TAG, "choose web url");
         }
 
 
