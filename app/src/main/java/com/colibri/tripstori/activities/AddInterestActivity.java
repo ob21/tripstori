@@ -12,7 +12,9 @@ import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -20,6 +22,8 @@ import android.widget.Toast;
 
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
+import com.colibri.tripstori.fragment.EditDialogFragment;
+import com.colibri.tripstori.manager.DataManager;
 import com.colibri.tripstori.model.Interest;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -31,13 +35,18 @@ import java.util.Calendar;
 /**
  * Created by OPOB7414 on 02/06/2016.
  */
-public class AddInterestActivity extends TSActivity implements View.OnClickListener {
+public class AddInterestActivity extends TSActivity implements View.OnClickListener, EditDialogFragment.EditDialogListener {
 
     public final static String CHOICE = "choice";
     private static final String TAG = "AddInterestActivity";
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private static final int REQUEST_IMAGE_PICK = 3;
+
+    private static final int NOTE = 0;
+    private static final int GEO = 1;
+    private static final int IMAGE = 2;
+    private static final int WEB = 3;
 
     private int mChoice;
     private TextView mEditDate;
@@ -47,10 +56,20 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     private int mDay;
     private int mHour;
     private int mMinute;
+    private double mLongitude;
+    private double mLatitude;
     private TextView mLocation;
     private TextView mImageUrl;
     private TextView mWebUrl;
     private ImageView mImageView;
+
+    private EditText mEditTitle;
+    private EditText mEditDescription;
+    private String mInterestLat;
+    private String mInterestLong;
+    private String mInterestImageUrl;
+    private String mInterestWebUrl;
+    private Button mSaveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +85,9 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         mChoice = getIntent().getIntExtra(CHOICE, 0);
         TSApp.logDebug(TAG, "mChoice = " + mChoice);
 
+        mEditTitle = (EditText)findViewById(R.id.edittext_title);
+        mEditDescription = (EditText)findViewById(R.id.edittext_text);
+
         mLocation = (TextView) findViewById(R.id.textview_location);
         mLocation.setVisibility(View.GONE);
         mImageUrl = (TextView) findViewById(R.id.textview_image_url);
@@ -76,18 +98,18 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         mImageView = (ImageView)findViewById(R.id.imageview);
 
         switch (mChoice) {
-            case 0:
+            case NOTE:
                 getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.NOTE).toLowerCase()));
                 break;
-            case 1:
+            case GEO:
                 getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.GEO).toLowerCase()));
                 mLocation.setVisibility(View.VISIBLE);
                 break;
-            case 2:
+            case IMAGE:
                 getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.IMAGE).toLowerCase()));
                 mImageUrl.setVisibility(View.VISIBLE);
                 break;
-            case 3:
+            case WEB:
                 getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.WEB).toLowerCase()));
                 mWebUrl.setVisibility(View.VISIBLE);
                 break;
@@ -115,6 +137,9 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
         mEditDate.setText(mDay + "-" + (mMonth + 1) + "-" + mYear);
         mEditTime.setText(mHour + ":" + mMinute);
+
+        mSaveButton = (Button)findViewById(R.id.save_bt);
+        mSaveButton.setOnClickListener(this);
 
     }
 
@@ -201,9 +226,56 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
         if (v == mWebUrl) {
             TSApp.logDebug(TAG, "choose web url");
+            EditDialogFragment dialog = new EditDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(EditDialogFragment.TITLE, "Ajoutez une adresse web");
+            dialog.setArguments(bundle);
+            dialog.show(getSupportFragmentManager(), "EditDialog");
         }
 
+        if (v == mSaveButton) {
+            TSApp.logDebug(TAG, "save button");
+            String date = mDay + mMonth + mYear + "_" + mHour + mMinute;
+            switch(mChoice) {
+                case NOTE:
+                    if(!mEditTitle.getText().toString().isEmpty() && !mEditDescription.getText().toString().isEmpty()) {
+                        DataManager.getInstance().createNoteInterest(mEditTitle.getText().toString(), Interest.NOTE, mEditDescription.getText().toString() + " " + date);
+                        finish();
+                    } else {
+                        fieldsWarning();
+                    }
+                    break;
+                case GEO:
+                    if(!mEditTitle.getText().toString().isEmpty() && mLongitude!=0 && mLatitude!=0) {
+                        DataManager.getInstance().createGeoInterest(mEditTitle.getText().toString() + " " + date, Interest.GEO, mLongitude, mLatitude);
+                        finish();
+                    } else {
+                        fieldsWarning();
+                    }
+                    break;
+                case IMAGE:
+                    if(!mEditTitle.getText().toString().isEmpty() && !mInterestImageUrl.isEmpty() && !mEditDescription.getText().toString().isEmpty()) {
+                        DataManager.getInstance().createImageInterest(mEditTitle.getText().toString(), Interest.IMAGE, mInterestImageUrl, mEditDescription.getText().toString() + date);
+                        finish();
+                    } else {
+                        fieldsWarning();
+                    }
+                    break;
+                case WEB:
+                    if(!mEditTitle.getText().toString().isEmpty() && !mInterestWebUrl.isEmpty() && !mEditDescription.getText().toString().isEmpty()) {
+                        DataManager.getInstance().createWebInterest(mEditTitle.getText().toString(), Interest.WEB, mInterestWebUrl, mEditDescription.getText().toString() + date);
+                        finish();
+                    } else {
+                        fieldsWarning();
+                    }
+                    break;
+            }
+        }
 
+    }
+
+    private void fieldsWarning() {
+        Toast.makeText(this, "Remplissez les champs pour créer un intérêt", Toast.LENGTH_LONG).show();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -213,11 +285,14 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 mLocation.setText(place.getName() + " " + place.getLatLng());
+                mLongitude = place.getLatLng().longitude;
+                mLatitude = place.getLatLng().latitude;
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mInterestImageUrl = "link_to_file_captured";
             mImageView.setImageBitmap(imageBitmap);
         }
         if(requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
@@ -239,4 +314,9 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onFinishEditDialog(String inputText) {
+        TSApp.logDebug(TAG, "onFinishEditDialog : " + inputText);
+        mInterestWebUrl = inputText;
+    }
 }

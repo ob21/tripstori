@@ -13,6 +13,7 @@ public class TSDialogFragment extends DialogFragment {
     private int mType;
     public final static int CONFIRM = 1;
     public final static int CHOICE = 2;
+    public final static int EDIT = 3;
 
     @NonNull
     @Override

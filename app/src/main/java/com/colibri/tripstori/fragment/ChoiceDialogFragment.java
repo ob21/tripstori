@@ -26,7 +26,9 @@ import java.util.List;
  */
 public class ChoiceDialogFragment extends TSDialogFragment {
 
-    public static final String DATA = "choices";
+    public static final String STRING_CHOICES = "choices";
+
+    public static final String IMAGES_CHOICES = "images";
 
     public static final String SELECTED = "selected";
 
@@ -46,9 +48,7 @@ public class ChoiceDialogFragment extends TSDialogFragment {
             }
         });
 
-        final List<String> items = (List<String>)bundle.get(DATA);
-        int position = bundle.getInt(SELECTED);
-
+        final List<String> items = (List<String>)bundle.get(STRING_CHOICES);
 
         ListAdapter adapter = new ArrayAdapter<String>(
                 getActivity(), R.layout.dialog_item, items) {

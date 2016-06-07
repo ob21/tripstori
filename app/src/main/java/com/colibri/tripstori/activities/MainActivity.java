@@ -1,6 +1,5 @@
 package com.colibri.tripstori.activities;
 
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -70,9 +69,15 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
                 choices.add("Lieu");
                 choices.add("Image");
                 choices.add("Page web");
+                ArrayList<Integer> images = new ArrayList<Integer>();
+                images.add(R.drawable.note_icon);
+                images.add(R.drawable.geo_icon);
+                images.add(R.drawable.image_icon);
+                images.add(R.drawable.web_icon);
                 mCurrentDialog = new ChoiceDialogFragment();
                 Bundle bundle = new Bundle();
-                bundle.putStringArrayList(ChoiceDialogFragment.DATA, choices);
+                bundle.putStringArrayList(ChoiceDialogFragment.STRING_CHOICES, choices);
+                bundle.putIntegerArrayList(ChoiceDialogFragment.IMAGES_CHOICES, images);
                 bundle.putInt(ChoiceDialogFragment.SELECTED, 0);
                 mCurrentDialog.setArguments(bundle);
                 mCurrentDialog.show(getSupportFragmentManager(), "ChoiceDialog");
@@ -83,6 +88,7 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        mListAdapter.setInterests(getDataManager().getInterests());
         mListAdapter.notifyDataSetChanged();
         TSApp.logDebug(TAG, "onResume this="+this);
     }
