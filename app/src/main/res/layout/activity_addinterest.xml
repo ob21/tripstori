@@ -75,14 +75,32 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textview_location"
+    <EditText
+        android:id="@+id/edittext_location"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:text="@string/input_location_default"
+        android:lines="2"
+        android:minLines="1"
+        android:maxLines="2"
+        android:scrollHorizontally="false"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:maxLength="50"
+        android:hint="@string/input_location_default"
+        android:text="@string/input_location"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/textview_gps"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/input_gps_default"
         android:textAppearance="@style/TextH1"
         android:textColor="@color/colorAccent"/>
 

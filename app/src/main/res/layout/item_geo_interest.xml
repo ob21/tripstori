@@ -50,10 +50,19 @@
                 android:textColor="#FFFFFF"/>
 
             <TextView
-                android:id="@+id/item_interest_longitude"
+                android:id="@+id/item_interest_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/item_interest_title"
+                style="@style/TextDefault"
+                android:text="New Text"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/item_interest_longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_interest_location"
                 style="@style/TextDefault"
                 android:text="New Text"
                 android:textColor="#FFFFFF"/>

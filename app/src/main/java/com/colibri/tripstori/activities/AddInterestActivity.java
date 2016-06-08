@@ -62,7 +62,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     private int mMinute;
     private double mLongitude;
     private double mLatitude;
-    private TextView mLocation;
+    private TextView mGps;
     private TextView mImageUrl;
     private TextView mWebUrl;
     private ImageView mImageView;
@@ -73,6 +73,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     private String mInterestLong;
     private String mInterestImageUrl;
     private String mInterestWebUrl;
+    private EditText mEditLocation;
     private Button mSaveButton;
 
     @Override
@@ -92,8 +93,11 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         mEditTitle = (EditText)findViewById(R.id.edittext_title);
         mEditDescription = (EditText)findViewById(R.id.edittext_text);
 
-        mLocation = (TextView) findViewById(R.id.textview_location);
-        mLocation.setVisibility(View.GONE);
+
+        mGps = (TextView) findViewById(R.id.textview_gps);
+        mGps.setVisibility(View.GONE);
+        mEditLocation = (EditText)findViewById(R.id.edittext_location);
+        mEditLocation.setVisibility(View.GONE);
         mImageUrl = (TextView) findViewById(R.id.textview_image_url);
         mImageUrl.setVisibility(View.GONE);
         mWebUrl = (TextView) findViewById(R.id.textview_web_url);
@@ -107,7 +111,8 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                 break;
             case GEO:
                 getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.GEO).toLowerCase()));
-                mLocation.setVisibility(View.VISIBLE);
+                mEditLocation.setVisibility(View.VISIBLE);
+                mGps.setVisibility(View.VISIBLE);
                 break;
             case IMAGE:
                 getSupportActionBar().setTitle(getString(R.string.add_activity_title_with_type, Interest.typeFromInt(Interest.IMAGE).toLowerCase()));
@@ -127,7 +132,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         mEditTime = (TextView) findViewById(R.id.textview_time);
         mEditTime.setOnClickListener(this);
 
-        mLocation.setOnClickListener(this);
+        mGps.setOnClickListener(this);
         mImageUrl.setOnClickListener(this);
         mWebUrl.setOnClickListener(this);
 
@@ -212,7 +217,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
             timePickerDialog.show();
         }
 
-        if (v == mLocation) {
+        if (v == mGps) {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             try {
                 startActivityForResult(builder.build(AddInterestActivity.this), PLACE_PICKER_REQUEST);
@@ -258,8 +263,8 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                     }
                     break;
                 case GEO:
-                    if(!mEditTitle.getText().toString().isEmpty() && mLongitude!=0 && mLatitude!=0) {
-                        DataManager.getInstance().createGeoInterest(mEditTitle.getText().toString() + " " + date, Interest.GEO, mLongitude, mLatitude);
+                    if(!mEditTitle.getText().toString().isEmpty() && !mEditLocation.getText().toString().isEmpty() && mLongitude!=0 && mLatitude!=0) {
+                        DataManager.getInstance().createGeoInterest(mEditTitle.getText().toString() + " " + date, Interest.GEO, mEditLocation.getText().toString(), mLongitude, mLatitude);
                         finish();
                     } else {
                         fieldsWarning();
@@ -296,7 +301,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                 Place place = PlacePicker.getPlace(this, data);
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-                mLocation.setText(place.getName() + " " + place.getLatLng());
+                mGps.setText(place.getName() + " " + place.getLatLng());
                 mLongitude = place.getLatLng().longitude;
                 mLatitude = place.getLatLng().latitude;
             }

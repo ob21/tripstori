@@ -11,8 +11,11 @@ public class GeoInterest extends Interest {
 
     private double mLatitude;
 
-    public GeoInterest(long id, String title, int type, double longitude, double latitude) {
-        super(id, title, type, longitude, latitude);
+    private String mLocation;
+
+    public GeoInterest(long id, String title, int type, String location, double longitude, double latitude) {
+        super(id, title, type, location, longitude, latitude);
+        setLocation(location);
         setLongitude(longitude);
         setLatitude(latitude);
     }
@@ -20,6 +23,14 @@ public class GeoInterest extends Interest {
     @Override
     public String toString() {
         return this.getTitle();
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        this.mLocation = location;
     }
 
     public double getLongitude() {

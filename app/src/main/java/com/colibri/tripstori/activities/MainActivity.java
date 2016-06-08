@@ -120,7 +120,7 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
             return true;
         }
         if (id == R.id.action_add_geo) {
-            getDataManager().createGeoInterest("title geo "+currentDateandTime, Interest.GEO, 24.345, 47.456);
+            getDataManager().createGeoInterest("title geo "+currentDateandTime, Interest.GEO, "default location", 24.345, 47.456);
             mListAdapter.setInterests(getDataManager().getInterests());
             mListAdapter.notifyDataSetChanged();
             return true;

@@ -25,6 +25,8 @@ public class Interest {
 
     private String mWebUrl;
 
+    private String mLocation;
+
     private double mLongitude;
 
     private double mLatitude;
@@ -40,18 +42,20 @@ public class Interest {
         setType(type);
         setImageUrl(null);
         setWebUrl(null);
+        setLocation(null);
         setLongitude(0);
         setLatitude(0);
         setText(text);
         setDate(date);
     }
 
-    public Interest(long id, String title, int type, double longitude, double latitude) {
+    public Interest(long id, String title, int type, String location, double longitude, double latitude) {
         setId(id);
         setTitle(title);
         setType(type);
         setImageUrl(null);
         setWebUrl(null);
+        setLocation(location);
         setLongitude(longitude);
         setLatitude(latitude);
         setText(null);
@@ -62,6 +66,8 @@ public class Interest {
         setTitle(title);
         setType(type);
         setImageUrl(imgUrl);
+        setWebUrl(null);
+        setLocation(null);
         setLongitude(0);
         setLatitude(0);
         setText(text);
@@ -73,17 +79,19 @@ public class Interest {
         setType(type);
         setImageUrl(null);
         setWebUrl(webUrl);
+        setLocation(null);
         setLongitude(0);
         setLatitude(0);
         setText(null);
     }
 
-    public Interest(long id, String title, int type, String imgUrl, String webURl, double longitude, double latitude, String text) {
+    public Interest(long id, String title, int type, String imgUrl, String webURl, String location, double longitude, double latitude, String text) {
         setId(id);
         setTitle(title);
         setType(type);
         setImageUrl(imgUrl);
         setWebUrl(webURl);
+        setLocation(location);
         setLongitude(longitude);
         setLatitude(latitude);
         setText(text);
@@ -119,6 +127,14 @@ public class Interest {
 
     public void setImageUrl(String imageUrl) {
         this.mImageUrl = imageUrl;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        this.mLocation = location;
     }
 
     public String getWebUrl() {
@@ -210,6 +226,8 @@ public class Interest {
             return false;
         if (mWebUrl != null ? !mWebUrl.equals(interest.mWebUrl) : interest.mWebUrl != null)
             return false;
+        if (mLocation != null ? !mLocation.equals(interest.mLocation) : interest.mLocation != null)
+            return false;
         if (mText != null ? !mText.equals(interest.mText) : interest.mText != null) return false;
         return mDate != null ? mDate.equals(interest.mDate) : interest.mDate == null;
 
@@ -223,6 +241,7 @@ public class Interest {
                 ", mTitle='" + mTitle + '\'' +
                 ", mImageUrl='" + mImageUrl + '\'' +
                 ", mWebUrl='" + mWebUrl + '\'' +
+                ", mLocation=" + mLocation +
                 ", mLongitude=" + mLongitude +
                 ", mLatitude=" + mLatitude +
                 ", mText='" + mText + '\'' +

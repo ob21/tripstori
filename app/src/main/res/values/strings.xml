@@ -27,8 +27,10 @@
     <string name="input_date"></string>
     <string name="input_time_default">heure</string>
     <string name="input_time"></string>
-    <string name="input_location_default">coordonnées gps</string>
+    <string name="input_location_default">lieu</string>
     <string name="input_location"></string>
+    <string name="input_gps_default">coordonnées gps</string>
+    <string name="input_gps"></string>
     <string name="input_image_url_default">image url</string>
     <string name="input_image_url"></string>
     <string name="input_web_url_default">web url</string>

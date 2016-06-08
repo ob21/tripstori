@@ -46,9 +46,9 @@ public class DataManager {
         return mDataSource.getAllInterests();
     }
 
-    public void createGeoInterest(String title, int type, double longitude, double latitude) {
+    public void createGeoInterest(String title, int type, String location, double longitude, double latitude) {
         TSApp.logDebug(TAG, "createGeoInterest");
-        mDataSource.createGeoInterest(title, type, longitude, latitude);
+        mDataSource.createGeoInterest(title, type, location, longitude, latitude);
     }
 
     public void createNoteInterest(String title, int type, String text) {
@@ -78,7 +78,7 @@ public class DataManager {
 
     public void updateGeoInterest(GeoInterest geoInterest) {
         TSApp.logDebug(TAG, "updateInterest");
-        mDataSource.updateGeoInterest(geoInterest.getTitle(), geoInterest.getType(), geoInterest.getLongitude(), geoInterest.getLatitude());
+        mDataSource.updateGeoInterest(geoInterest.getTitle(), geoInterest.getType(), geoInterest.getLocation(), geoInterest.getLongitude(), geoInterest.getLatitude());
     }
 
 }

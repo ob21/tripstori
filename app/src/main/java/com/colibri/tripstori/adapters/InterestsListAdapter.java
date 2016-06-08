@@ -99,6 +99,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
 //            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
+            holder.location = (TextView) view.findViewById(R.id.item_interest_location);
             holder.longitude = (TextView) view.findViewById(R.id.item_interest_longitude);
             holder.latitude = (TextView) view.findViewById(R.id.item_interest_latitude);
         } else
@@ -160,6 +161,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             });
         } else
         if(holder.type == VIEW_TYPE_GEO) {
+            holder.location.setText(String.valueOf(interest.getLocation()));
             holder.longitude.setText(String.valueOf(interest.getLongitude()));
             holder.latitude.setText(String.valueOf(interest.getLatitude()));
 //            holder.netimage.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
@@ -251,6 +253,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         public TextView title;
         public TextView img;
         public TextView web;
+        public TextView location;
         public TextView longitude;
         public TextView latitude;
         public TextView text;

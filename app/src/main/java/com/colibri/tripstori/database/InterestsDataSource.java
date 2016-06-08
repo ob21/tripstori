@@ -27,7 +27,7 @@ public class InterestsDataSource {
     private TSDbHelper dbHelper;
     private String[] allColumns = { TSDbHelper.COLUMN_ID,
             TSDbHelper.COLUMN_TITLE, TSDbHelper.COLUMN_TYPE, TSDbHelper.COLUMN_IMGURL, TSDbHelper.COLUMN_WEBURL,
-            TSDbHelper.COLUMN_LONGITUDE, TSDbHelper.COLUMN_LATITUDE,
+            TSDbHelper.COLUMN_LOCATION, TSDbHelper.COLUMN_LONGITUDE, TSDbHelper.COLUMN_LATITUDE,
             TSDbHelper.COLUMN_TEXT};
 
     public InterestsDataSource(Context context) {
@@ -42,13 +42,15 @@ public class InterestsDataSource {
         dbHelper.close();
     }
 
-    public Interest createGeoInterest(String title, int type, double longitude, double latitude) {
+    public Interest createGeoInterest(String title, int type, String location, double longitude, double latitude) {
         TSApp.logDebug(TAG, "createGeoInterest type = "+Interest.typeFromInt(type));
+        TSApp.logDebug(TAG, "createGeoInterest : " + title + " " + type + " " + location + " "+ longitude + " " + latitude);
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, "");
+        values.put(TSDbHelper.COLUMN_LOCATION, location);
         values.put(TSDbHelper.COLUMN_LONGITUDE, longitude);
         values.put(TSDbHelper.COLUMN_LATITUDE, latitude);
         values.put(TSDbHelper.COLUMN_TEXT, "");
@@ -63,12 +65,13 @@ public class InterestsDataSource {
         return newInterest;
     }
 
-    public Interest updateGeoInterest(String title, int type, double longitude, double latitude) {
+    public Interest updateGeoInterest(String title, int type, String location, double longitude, double latitude) {
         ContentValues values = new ContentValues();
         values.put(TSDbHelper.COLUMN_TITLE, title);
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, "");
+        values.put(TSDbHelper.COLUMN_LOCATION, location);
         values.put(TSDbHelper.COLUMN_LONGITUDE, longitude);
         values.put(TSDbHelper.COLUMN_LATITUDE, latitude);
         values.put(TSDbHelper.COLUMN_TEXT, "");
@@ -90,6 +93,7 @@ public class InterestsDataSource {
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, "");
+        values.put(TSDbHelper.COLUMN_LOCATION, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
         values.put(TSDbHelper.COLUMN_LATITUDE, 0);
         values.put(TSDbHelper.COLUMN_TEXT, text);
@@ -111,6 +115,7 @@ public class InterestsDataSource {
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, imgUrl);
         values.put(TSDbHelper.COLUMN_WEBURL, "");
+        values.put(TSDbHelper.COLUMN_LOCATION, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
         values.put(TSDbHelper.COLUMN_LATITUDE, 0);
         values.put(TSDbHelper.COLUMN_TEXT, text);
@@ -132,6 +137,7 @@ public class InterestsDataSource {
         values.put(TSDbHelper.COLUMN_TYPE, Interest.typeFromInt(type));
         values.put(TSDbHelper.COLUMN_IMGURL, "");
         values.put(TSDbHelper.COLUMN_WEBURL, webUrl);
+        values.put(TSDbHelper.COLUMN_LOCATION, "");
         values.put(TSDbHelper.COLUMN_LONGITUDE, 0);
         values.put(TSDbHelper.COLUMN_LATITUDE, 0);
         values.put(TSDbHelper.COLUMN_TEXT, text);
@@ -167,6 +173,7 @@ public class InterestsDataSource {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Interest interest = cursorToInterest(cursor);
+            TSApp.logDebug(TAG, "interest = "+interest);
             interests.add(interest);
             cursor.moveToNext();
         }
@@ -178,14 +185,16 @@ public class InterestsDataSource {
     private Interest cursorToInterest(Cursor cursor) {
         TSApp.logDebug(TAG, "cursor count = "+cursor.getColumnCount());
         TSApp.logDebug(TAG, "cursor getString(2) = "+cursor.getString(2));
+        TSApp.logDebug(TAG, "cursor getString(5) = "+cursor.getString(5));
         Interest interest = new Interest(cursor.getLong(0),
                 cursor.getString(1),
                 Interest.intFromType(cursor.getString(2)),
                 cursor.getString(3),
                 cursor.getString(4),
-                cursor.getDouble(5),
+                cursor.getString(5),
                 cursor.getDouble(6),
-                cursor.getString(7));
+                cursor.getDouble(7),
+                cursor.getString(8));
         return interest;
     }
 }
