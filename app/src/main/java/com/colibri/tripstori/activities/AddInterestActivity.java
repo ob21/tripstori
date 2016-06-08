@@ -3,6 +3,7 @@ package com.colibri.tripstori.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
+import com.colibri.tripstori.fragment.ChoiceDialogFragment;
 import com.colibri.tripstori.fragment.EditDialogFragment;
 import com.colibri.tripstori.manager.DataManager;
 import com.colibri.tripstori.model.Interest;
@@ -34,12 +36,15 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import crl.android.pdfwriter.Array;
 
 /**
  * Created by OPOB7414 on 02/06/2016.
  */
-public class AddInterestActivity extends TSActivity implements View.OnClickListener, EditDialogFragment.EditDialogListener {
+public class AddInterestActivity extends TSActivity implements View.OnClickListener, EditDialogFragment.EditDialogListener, DialogInterface.OnClickListener {
 
     public final static String CHOICE = "choice";
     private static final String TAG = "AddInterestActivity";
@@ -231,13 +236,16 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         if (v == mImageUrl) {
             TSApp.logDebug(TAG, "mImageUrl");
 
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-//            Intent i = new Intent(Intent.ACTION_PICK,
-//                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            startActivityForResult(i, REQUEST_IMAGE_PICK);
+            ChoiceDialogFragment dialog = new ChoiceDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(ChoiceDialogFragment.TITLE, "Prendre une photo");
+            ArrayList<String> choices = new ArrayList<>();
+            choices.add("avec la camera");
+            choices.add("dans l'appareil");
+            bundle.putStringArrayList(ChoiceDialogFragment.STRING_CHOICES, choices);
+            dialog.setArguments(bundle);
+            dialog.show(getSupportFragmentManager(), "photo");
+
         }
 
         if (v == mWebUrl) {
@@ -315,6 +323,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         if(requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
             TSApp.logDebug(TAG, "got REQUEST_IMAGE_PICK result");
             Uri selectedImage = data.getData();
+            TSApp.logDebug(TAG, "got REQUEST_IMAGE_PICK result : selectedImage = "+selectedImage);
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
             Cursor cursor = getContentResolver().query(selectedImage,
@@ -323,10 +332,16 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
+            TSApp.logDebug(TAG, "got REQUEST_IMAGE_PICK result : picturePath = "+picturePath);
             cursor.close();
-
-            Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-            mImageView.setImageBitmap(bitmap);
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeFile(picturePath);
+            } catch(Exception e) {
+                TSApp.logDebug(TAG, "got REQUEST_IMAGE_PICK result : cannot decode file (permission ?)");
+            }
+            TSApp.logDebug(TAG, "got REQUEST_IMAGE_PICK result : bitmap = "+bitmap);
+            if(bitmap!=null) mImageView.setImageBitmap(bitmap);
         }
 
     }
@@ -339,5 +354,22 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
     private String convert2Digits(int i) {
         return new DecimalFormat("00").format(i);
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch(which) {
+            case 0:
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+                break;
+            case 1:
+                Intent pickPictureIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPictureIntent, REQUEST_IMAGE_PICK);
+                break;
+        }
     }
 }

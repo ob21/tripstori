@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.colibri.tripstori.R;
+import com.colibri.tripstori.TSApp;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class ChoiceDialogFragment extends TSDialogFragment {
     public static final String SELECTED = "selected";
 
     public static final String TITLE = "title";
+    private static final String TAG = "ChoiceDialogFragment";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -53,6 +55,10 @@ public class ChoiceDialogFragment extends TSDialogFragment {
         });
 
         final List<String> items = (List<String>)bundle.get(STRING_CHOICES);
+        final List<Integer> images = (List<Integer>)bundle.get(IMAGES_CHOICES);
+
+        TSApp.logDebug(TAG, "items = "+items);
+        if(items != null) TSApp.logDebug(TAG, "items.get(0) = "+items.get(0));
 
         ListAdapter adapter = new ArrayAdapter<String>(
                 getActivity(), R.layout.dialog_item, items) {
@@ -85,24 +91,28 @@ public class ChoiceDialogFragment extends TSDialogFragment {
                     holder = (ViewHolder) convertView.getTag();
                 }
 
-                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.note_icon, null);
-                switch(position) {
-                    case 0:
-                        drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.note_icon, null);
-                        break;
-                    case 1:
-                        drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.geo_icon, null);
-                        break;
-                    case 2:
-                        drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.image_icon, null);
-                        break;
-                    case 3:
-                        drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.web_icon, null);
-                        break;
+                if(images!=null && !images.isEmpty() && images.size()==items.size()) {
+                    Drawable drawable = ResourcesCompat.getDrawable(getResources(), images.get(0), null);
+                    switch(position) {
+                        case 0:
+                            drawable = ResourcesCompat.getDrawable(getResources(), images.get(0), null);
+                            break;
+                        case 1:
+                            drawable = ResourcesCompat.getDrawable(getResources(), images.get(1), null);
+                            break;
+                        case 2:
+                            drawable = ResourcesCompat.getDrawable(getResources(), images.get(2), null);
+                            break;
+                        case 3:
+                            drawable = ResourcesCompat.getDrawable(getResources(), images.get(3), null);
+                            break;
+                    }
+                    holder.icon.setImageDrawable(drawable);
+                } else {
+                    holder.icon.setVisibility(View.GONE);
                 }
-
+                TSApp.logDebug(TAG, "set choice : "+items.get(position));
                 holder.title.setText(items.get(position));
-                holder.icon.setImageDrawable(drawable);
 
                 return convertView;
             }

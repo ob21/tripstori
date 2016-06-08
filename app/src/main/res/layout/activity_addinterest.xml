@@ -129,7 +129,8 @@
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="100dp"
-        android:layout_height="100dp"/>
+        android:layout_height="100dp"
+        android:layout_marginLeft="50dp"/>
 
     <Button
         android:id="@+id/save_bt"
