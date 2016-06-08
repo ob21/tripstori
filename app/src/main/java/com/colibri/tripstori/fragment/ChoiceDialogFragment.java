@@ -32,6 +32,8 @@ public class ChoiceDialogFragment extends TSDialogFragment {
 
     public static final String SELECTED = "selected";
 
+    public static final String TITLE = "title";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -40,7 +42,9 @@ public class ChoiceDialogFragment extends TSDialogFragment {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
 
-        dialog.setTitle("Ajouter un intérêt");
+        String title = bundle.getString(TITLE);
+
+        dialog.setTitle(title);
         dialog.setPositiveButton("Annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

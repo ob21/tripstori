@@ -9,17 +9,18 @@
         android:layout_margin="@dimen/item_list_margin"
         android:background="@color/colorBackground">
 
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/item_interest_niv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true" />
+        <!--<com.android.volley.toolbox.NetworkImageView-->
+            <!--android:id="@+id/item_interest_niv"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerHorizontal="true" />-->
 
         <ImageView
             android:id="@+id/item_interest_iv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:scaleType="centerCrop"/>
 
         <LinearLayout

@@ -2,6 +2,7 @@ package com.colibri.tripstori.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,7 +12,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,6 +33,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 /**
@@ -130,13 +134,13 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
         // Get Current Date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
+        mMonth = c.get(Calendar.MONTH) + 1;
         mDay = c.get(Calendar.DAY_OF_MONTH);
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        mEditDate.setText(mDay + "-" + (mMonth + 1) + "-" + mYear);
-        mEditTime.setText(mHour + ":" + mMinute);
+        mEditDate.setText(convert2Digits(mDay) + "-" + (convert2Digits(mMonth)) + "-" + mYear);
+        mEditTime.setText(convert2Digits(mHour) + ":" + convert2Digits(mMinute));
 
         mSaveButton = (Button)findViewById(R.id.save_bt);
         mSaveButton.setOnClickListener(this);
@@ -154,17 +158,21 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return false;
+    }
+
+    @Override
     public void onClick(View v) {
 
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
+
         if (v == mEditDate) {
-
-            // Get Current Date
-            final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     new DatePickerDialog.OnDateSetListener() {
 
@@ -173,20 +181,19 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                                               int monthOfYear, int dayOfMonth) {
 
                             mEditDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            mYear = year;
+                            mMonth = monthOfYear + 1;
+                            mDay = dayOfMonth;
 
                         }
-                    }, mYear, mMonth, mDay);
+                    }, mYear, mMonth - 1, mDay);
+//            String date = mDay + "." + mMonth + "." + mYear + "_" + mHour + "h" +  mMinute;
+//            TSApp.logDebug(TAG, "date = "+date);
             datePickerDialog.show();
 
         }
 
         if (v == mEditTime) {
-
-            // Get Current Time
-            final Calendar c = Calendar.getInstance();
-            mHour = c.get(Calendar.HOUR_OF_DAY);
-            mMinute = c.get(Calendar.MINUTE);
-
             // Launch Time Picker Dialog
             TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                     new TimePickerDialog.OnTimeSetListener() {
@@ -196,8 +203,12 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                                               int minute) {
 
                             mEditTime.setText(hourOfDay + ":" + minute);
+                            mHour = hourOfDay;
+                            mMinute = minute;
                         }
-                    }, mHour, mMinute, false);
+                    }, mHour, mMinute, true);
+//            String date = mDay + "." + mMonth + "." + mYear + "_" + mHour + "h" +  mMinute;
+//            TSApp.logDebug(TAG, "date = "+date);
             timePickerDialog.show();
         }
 
@@ -235,7 +246,8 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
         if (v == mSaveButton) {
             TSApp.logDebug(TAG, "save button");
-            String date = mDay + mMonth + mYear + "_" + mHour + mMinute;
+            String date = convert2Digits(mDay) + "." + convert2Digits(mMonth) + "." + mYear + "_" + convert2Digits(mHour) + "h" +  convert2Digits(mMinute);
+            TSApp.logDebug(TAG, "date = "+date);
             switch(mChoice) {
                 case NOTE:
                     if(!mEditTitle.getText().toString().isEmpty() && !mEditDescription.getText().toString().isEmpty()) {
@@ -318,5 +330,9 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     public void onFinishEditDialog(String inputText) {
         TSApp.logDebug(TAG, "onFinishEditDialog : " + inputText);
         mInterestWebUrl = inputText;
+    }
+
+    private String convert2Digits(int i) {
+        return new DecimalFormat("00").format(i);
     }
 }

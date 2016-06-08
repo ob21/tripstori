@@ -79,6 +79,7 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
                 bundle.putStringArrayList(ChoiceDialogFragment.STRING_CHOICES, choices);
                 bundle.putIntegerArrayList(ChoiceDialogFragment.IMAGES_CHOICES, images);
                 bundle.putInt(ChoiceDialogFragment.SELECTED, 0);
+                bundle.putString(ChoiceDialogFragment.TITLE, "Ajouter un intérêt");
                 mCurrentDialog.setArguments(bundle);
                 mCurrentDialog.show(getSupportFragmentManager(), "ChoiceDialog");
             }
@@ -217,6 +218,10 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
                 TSApp.logDebug(TAG, "# onInterestLongClick "+i.getId());
                 mInterestToDelete = i;
                 mCurrentDialog = new ConfirmDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(ConfirmDialogFragment.TITLE, "Effacer cet intérêt");
+                bundle.putString(ConfirmDialogFragment.MESSAGE, "Êtes-vous sûr ?");
+                mCurrentDialog.setArguments(bundle);
                 mCurrentDialog.show(getSupportFragmentManager(), "DeleteDialog");
             }
         });

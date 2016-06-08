@@ -1,21 +1,16 @@
 package com.colibri.tripstori.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.colibri.tripstori.R;
 import com.colibri.tripstori.TSApp;
-import com.colibri.tripstori.activities.MainActivity;
 import com.colibri.tripstori.model.Interest;
 import com.colibri.tripstori.utils.VolleyManager;
 
@@ -90,7 +85,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_NOTE;
             holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
-            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+//            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.text = (TextView) view.findViewById(R.id.item_interest_text);
@@ -101,7 +96,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_GEO;
             holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
-            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+//            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.longitude = (TextView) view.findViewById(R.id.item_interest_longitude);
@@ -113,7 +108,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_IMAGE;
             holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
-            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+//            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.img = (TextView) view.findViewById(R.id.item_interest_img);
@@ -124,7 +119,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
             holder = new InterestViewHolder(view);
             holder.type = VIEW_TYPE_WEB;
             holder.image = (ImageView) view.findViewById(R.id.item_interest_iv);
-            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
+//            holder.netimage = (NetworkImageView) view.findViewById(R.id.item_interest_niv);
             holder.id = (TextView) view.findViewById(R.id.item_interest_id);
             holder.title = (TextView) view.findViewById(R.id.item_interest_title);
             holder.web = (TextView) view.findViewById(R.id.item_interest_web);
@@ -139,14 +134,14 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
 
         holder.id.setText("id="+String.valueOf(interest.getId()));
         holder.title.setText(interest.getTitle() + " - " + interest.getType());
-        holder.netimage.setDefaultImageResId(R.drawable.photo);
-        holder.netimage.setErrorImageResId(R.drawable.photo);
+//        holder.netimage.setDefaultImageResId(R.drawable.photo);
+//        holder.netimage.setErrorImageResId(R.drawable.photo);
 
         TSApp.logDebug(TAG, "interest = "+interest);
 
         if(holder.type == VIEW_TYPE_NOTE) {
             holder.text.setText(interest.getText());
-            holder.netimage.setImageUrl(RANDO1_URL, VolleyManager.getImageLoader());
+//            holder.netimage.setImageUrl(RANDO1_URL, VolleyManager.getImageLoader());
             holder.image.setImageResource(R.drawable.rando1);
             TSApp.logDebug(TAG, "set note item with image : "+RANDO1_URL);
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
@@ -167,7 +162,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         if(holder.type == VIEW_TYPE_GEO) {
             holder.longitude.setText(String.valueOf(interest.getLongitude()));
             holder.latitude.setText(String.valueOf(interest.getLatitude()));
-            holder.netimage.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
+//            holder.netimage.setImageUrl(MAPS_URL, VolleyManager.getImageLoader());
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v) {
@@ -185,7 +180,7 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         } else
         if(holder.type == VIEW_TYPE_IMAGE) {
             holder.img.setText(String.valueOf(interest.getImageUrl()));
-            holder.netimage.setImageUrl(RANDO2_URL, VolleyManager.getImageLoader());
+//            holder.netimage.setImageUrl(RANDO2_URL, VolleyManager.getImageLoader());
             holder.image.setImageResource(R.drawable.rando2);
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
                 @Override
@@ -204,8 +199,8 @@ public class InterestsListAdapter extends RecyclerView.Adapter<InterestsListAdap
         } else
         if(holder.type == VIEW_TYPE_WEB) {
             holder.web.setText(String.valueOf(interest.getWebUrl()));
-            holder.netimage.setImageUrl(RANDO1_URL, VolleyManager.getImageLoader());
-//            holder.image.setImageResource(R.drawable.rando1);
+//            holder.netimage.setImageUrl(RANDO1_URL, VolleyManager.getImageLoader());
+            holder.image.setImageResource(R.drawable.rando1);
             holder.setOnItemClickListener(new InterestViewHolder.OnItemClickListener() {
                 @Override
                 public void onItemClick(View v) {

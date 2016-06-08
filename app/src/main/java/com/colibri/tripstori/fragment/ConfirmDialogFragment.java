@@ -11,12 +11,20 @@ import android.support.v4.app.DialogFragment;
  */
 public class ConfirmDialogFragment extends TSDialogFragment {
 
+    public static final String TITLE = "title";
+    public static final String MESSAGE = "message";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setType(TSDialogFragment.CONFIRM);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle("Effacer cet intérêt");
-        alertDialogBuilder.setMessage("Êtes-vous sûr ?");
+
+        Bundle bundle = getArguments();
+        String title = bundle.getString(TITLE);
+        String message = bundle.getString(MESSAGE);
+
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
 
         //null should be your on click listener
         alertDialogBuilder.setPositiveButton("OK", (DialogInterface.OnClickListener) getActivity());
