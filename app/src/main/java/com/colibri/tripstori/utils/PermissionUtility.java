@@ -39,6 +39,8 @@ public class PermissionUtility {
         {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    TSApp.logDebug(TAG, "shouldShowRequestPermissionRationale true");
+                    // 2nd asked
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
                     alertBuilder.setCancelable(true);
                     alertBuilder.setTitle("Permission nécéssaire");
@@ -47,14 +49,15 @@ public class PermissionUtility {
                         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                            setAsked();
+                            setAskedTwice();
                         }
                     });
                     AlertDialog alert = alertBuilder.create();
                     alert.show();
                 } else {
+                    TSApp.logDebug(TAG, "shouldShowRequestPermissionRationale false");
+                    // 1st asked
                     ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    setAsked();
                 }
                 return false;
             } else {
@@ -88,15 +91,17 @@ public class PermissionUtility {
         alert.show();
     }
 
-    public void setAsked() {
+    public void setAskedTwice() {
+        TSApp.logDebug(TAG, "setAsked = true");
         SharedPreferences sharedPref = mActivity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(ASKED_KEY, true);
         editor.commit();
     }
 
-    public boolean isAsked() {
+    public boolean isAskedTwice() {
         SharedPreferences sharedPref = mActivity.getPreferences(Context.MODE_PRIVATE);
+        TSApp.logDebug(TAG, "isAsked = "+sharedPref.getBoolean(ASKED_KEY, false));
         return sharedPref.getBoolean(ASKED_KEY, false);
     }
 

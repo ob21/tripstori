@@ -248,7 +248,7 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
                 dialog.setArguments(bundle);
                 dialog.show(getSupportFragmentManager(), "photo");
             } else {
-                if(utility.isAsked()) {
+                if(utility.isAskedTwice()) {
                     utility.showStoragePermissionInfo(AddInterestActivity.this);
                 }
             }
