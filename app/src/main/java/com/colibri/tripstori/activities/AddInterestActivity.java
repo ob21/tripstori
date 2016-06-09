@@ -30,6 +30,7 @@ import com.colibri.tripstori.fragment.ChoiceDialogFragment;
 import com.colibri.tripstori.fragment.EditDialogFragment;
 import com.colibri.tripstori.manager.DataManager;
 import com.colibri.tripstori.model.Interest;
+import com.colibri.tripstori.utils.PermissionUtility;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -39,12 +40,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import crl.android.pdfwriter.Array;
-
 /**
  * Created by OPOB7414 on 02/06/2016.
  */
-public class AddInterestActivity extends TSActivity implements View.OnClickListener, EditDialogFragment.EditDialogListener, DialogInterface.OnClickListener {
+public class AddInterestActivity extends TSActivity implements View.OnClickListener, EditDialogFragment.EditDialogListener, DialogInterface.OnClickListener, PermissionUtility.OnPermissionInfoListener {
 
     public final static String CHOICE = "choice";
     private static final String TAG = "AddInterestActivity";
@@ -235,16 +234,24 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
 
         if (v == mImageUrl) {
             TSApp.logDebug(TAG, "mImageUrl");
-
-            ChoiceDialogFragment dialog = new ChoiceDialogFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(ChoiceDialogFragment.TITLE, "Prendre une photo");
-            ArrayList<String> choices = new ArrayList<>();
-            choices.add("avec la camera");
-            choices.add("dans l'appareil");
-            bundle.putStringArrayList(ChoiceDialogFragment.STRING_CHOICES, choices);
-            dialog.setArguments(bundle);
-            dialog.show(getSupportFragmentManager(), "photo");
+            PermissionUtility utility = new PermissionUtility(AddInterestActivity.this);
+            boolean authorized = utility.checkStoragePermission(AddInterestActivity.this);
+            TSApp.logDebug(TAG, "Storage permission : "+authorized);
+            if(authorized) {
+                ChoiceDialogFragment dialog = new ChoiceDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(ChoiceDialogFragment.TITLE, "Prendre une photo");
+                ArrayList<String> choices = new ArrayList<>();
+                choices.add("avec la camera");
+                choices.add("dans l'appareil");
+                bundle.putStringArrayList(ChoiceDialogFragment.STRING_CHOICES, choices);
+                dialog.setArguments(bundle);
+                dialog.show(getSupportFragmentManager(), "photo");
+            } else {
+                if(utility.isAsked()) {
+                    utility.showStoragePermissionInfo(AddInterestActivity.this);
+                }
+            }
 
         }
 
@@ -359,17 +366,33 @@ public class AddInterestActivity extends TSActivity implements View.OnClickListe
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch(which) {
-            case 0:
+            case 0: // Take a photo
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
                 break;
-            case 1:
+            case 1: // Pick a photo
                 Intent pickPictureIntent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPictureIntent, REQUEST_IMAGE_PICK);
                 break;
+        }
+    }
+
+    @Override
+    public void onPermissionInfoOk() {
+        TSApp.logDebug(TAG, "onPermissionInfoOk");
+        try {
+            Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            i.addCategory(Intent.CATEGORY_DEFAULT);
+            i.setData(Uri.parse("package:"+getApplicationContext().getPackageName()));
+            TSApp.logDebug(TAG, "package name : "+(getApplicationContext().getPackageName()));
+            TSApp.logDebug(TAG, "activity : "+this);
+            startActivity(i);
+        } catch(Exception e) {
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+            startActivity(intent);
         }
     }
 }
