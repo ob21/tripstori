@@ -14,6 +14,8 @@ public class ConfirmDialogFragment extends TSDialogFragment {
     public static final String TITLE = "title";
     public static final String MESSAGE = "message";
 
+    private DialogInterface.OnClickListener mOnclick;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setType(TSDialogFragment.CONFIRM);
@@ -27,7 +29,7 @@ public class ConfirmDialogFragment extends TSDialogFragment {
         alertDialogBuilder.setMessage(message);
 
         //null should be your on click listener
-        alertDialogBuilder.setPositiveButton("OK", (DialogInterface.OnClickListener) getActivity());
+        alertDialogBuilder.setPositiveButton("OK", mOnclick);
         alertDialogBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
 
             @Override
@@ -38,5 +40,9 @@ public class ConfirmDialogFragment extends TSDialogFragment {
 
 
         return alertDialogBuilder.create();
+    }
+
+    public void setOnClickOKListener(DialogInterface.OnClickListener l) {
+        mOnclick = l;
     }
 }

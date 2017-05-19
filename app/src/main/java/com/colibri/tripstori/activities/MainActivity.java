@@ -217,12 +217,18 @@ public class MainActivity extends TSActivity implements DialogInterface.OnClickL
             public void run() {
                 TSApp.logDebug(TAG, "# onInterestLongClick "+i.getId());
                 mInterestToDelete = i;
-                mCurrentDialog = new ConfirmDialogFragment();
+                ConfirmDialogFragment currentDialog = new ConfirmDialogFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(ConfirmDialogFragment.TITLE, "Effacer cet intérêt");
                 bundle.putString(ConfirmDialogFragment.MESSAGE, "Êtes-vous sûr ?");
-                mCurrentDialog.setArguments(bundle);
-                mCurrentDialog.show(getSupportFragmentManager(), "DeleteDialog");
+                currentDialog.setArguments(bundle);
+                currentDialog.setOnClickOKListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                currentDialog.show(getSupportFragmentManager(), "DeleteDialog");
             }
         });
     }
